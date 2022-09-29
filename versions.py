@@ -10,3 +10,11 @@ class Version(_Version):
 
 
 VERSION_0_0_1 = Version(notes=["Initial version."])
+VERSION_0_0_2 = Version(
+    notes=[
+        "Trying to get .png files to be included in the install, "
+        "because this will allow the sample fonts to work out of the box."
+    ]
+)
+VERSION_0_0_3 = Version(notes=["Still trying to include .pngs..."])
+VERSION_0_0_4 = Version(notes=["MANIFEST.in is working; png files are included in the install."])
