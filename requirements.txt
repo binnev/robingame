@@ -1,7 +1,9 @@
-pygame
+pygame >=2.0
+typing >=3.7
+packaging >=3.0
+build >= 0.8
 numpy
 black
 pytest
-matplotlib
 coverage
 pytest-cov
