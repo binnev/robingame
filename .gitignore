@@ -2,3 +2,6 @@ venv
 .idea*
 .style*
 high-scores.json
+dist
+*.egg-info
+*.pytest_cache
