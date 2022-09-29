@@ -1,9 +1,16 @@
+# core
 pygame >=2.0
 typing >=3.7
-packaging >=3.0
-build >= 0.8
 numpy
+
+# testing and development
 black
 pytest
 coverage
 pytest-cov
+packaging >=3.0
+
+# packaging
+wheel>=0.37, <0.38
+twine>=4.0.1, <5.0
+build>=0.8.0, <0.9
