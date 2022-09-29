@@ -1,8 +1,8 @@
 import string
 from pathlib import Path
 
-from base.image import init_display
-from base.text.font import Font
+from robingame.image import init_display
+from robingame.text.font import Font
 
 window = init_display()
 

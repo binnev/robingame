@@ -10,7 +10,7 @@ from pygame.surface import Surface
 
 
 if TYPE_CHECKING:
-    from base.objects.entity import Entity
+    from robingame.objects.entity import Entity
 
 Point = namedtuple("Point", ["x", "y"])
 

@@ -2,8 +2,8 @@ import pygame.draw
 from pygame.color import Color
 from pygame.surface import Surface
 
-from base.objects import Game
-from base.text.font import fonts
+from robingame.objects import Game
+from robingame.text.font import fonts
 
 snippet = """
  1space

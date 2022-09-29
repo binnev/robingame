@@ -4,7 +4,7 @@ from typing import Union
 import pygame
 from pygame.event import EventType, Event
 
-from base.image import init_display
+from robingame.image import init_display
 
 init_display()
 

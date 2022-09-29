@@ -1,7 +1,7 @@
 import pytest
 from pygame import Surface, Color
 
-from base.image import (
+from robingame.image import (
     SpriteAnimation,
     load_spritesheet,
     load_image_sequence,

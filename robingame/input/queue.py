@@ -1,6 +1,6 @@
 from collections import deque
 
-from base.utils import count_edges
+from robingame.utils import count_edges
 
 
 class Empty(tuple):

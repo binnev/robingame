@@ -3,16 +3,16 @@ from unittest.mock import patch
 import pygame
 import pytest
 
-from base.input import gamecube
-from base.input.gamecube import (
+from robingame.input import gamecube
+from robingame.input.gamecube import (
     GamecubeController,
     ButtonInput,
 )
-from base.input.queue import InputQueue
+from robingame.input.queue import InputQueue
 
 
 @patch("pygame.joystick.Joystick")
-@patch("base.input.gamecube.GamecubeControllerReader.get_values")
+@patch("robingame.input.gamecube.GamecubeControllerReader.get_values")
 def test_gamecube_controller_basic(mock_get_values, mock_joystick):
     mock_get_values.return_value = (1, 0)  # A down, B not down
     pygame.init()
@@ -27,7 +27,7 @@ def test_gamecube_controller_basic(mock_get_values, mock_joystick):
 
 
 @patch("pygame.joystick.Joystick")
-@patch("base.input.gamecube.GamecubeControllerReader.get_values")
+@patch("robingame.input.gamecube.GamecubeControllerReader.get_values")
 def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
     mock_get_values.return_value = (1, 0)  # A down, B not down
     pygame.init()

@@ -1,4 +1,4 @@
-from base.image import SpriteAnimation, relative_folder
+from robingame.image import SpriteAnimation, relative_folder
 
 folder = relative_folder(__file__, "")
 

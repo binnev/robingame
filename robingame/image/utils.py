@@ -5,7 +5,7 @@ from pathlib import Path
 import pygame
 from pygame import Surface
 
-from base.utils import limit_value
+from robingame.utils import limit_value
 
 
 def init_display() -> Surface:

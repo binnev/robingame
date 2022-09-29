@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from pygame import Color
 
-from base.gui.button import Button
+from robingame.gui.button import Button
 
 
 def test_button_instantiation_default_values(font_init):
@@ -53,10 +53,10 @@ def test_button_with_overridden_method_still_calls_hook(font_init):
     mock.assert_called_with(button)
 
 
-@patch("base.gui.button.Button.on_unfocus")
-@patch("base.gui.button.Button.on_focus")
-@patch("base.gui.button.Button.on_release")
-@patch("base.gui.button.Button.on_press")
+@patch("robingame.gui.button.Button.on_unfocus")
+@patch("robingame.gui.button.Button.on_focus")
+@patch("robingame.gui.button.Button.on_release")
+@patch("robingame.gui.button.Button.on_press")
 def test_updating_is_pressed_and_is_focused_correctly_updates_state(
     mock_on_press,
     mock_on_release,

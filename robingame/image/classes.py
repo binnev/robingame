@@ -3,7 +3,7 @@ from typing import Callable
 
 from pygame import Surface
 
-from base.image.utils import (
+from robingame.image.utils import (
     load_spritesheet,
     load_image_sequence,
     flip_images,

@@ -5,8 +5,8 @@ import pygame
 from pygame.color import Color
 from pygame.surface import Surface
 
-from base.objects.entity import Entity
-from base.text.font import fonts
+from robingame.objects.entity import Entity
+from robingame.text.font import fonts
 
 
 class FpsTracker(Entity):

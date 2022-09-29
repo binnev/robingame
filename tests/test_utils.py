@@ -1,6 +1,6 @@
 import pytest
 
-from base.utils import count_edges, SparseMatrix, unzip
+from robingame.utils import count_edges, SparseMatrix, unzip
 
 
 @pytest.mark.parametrize(

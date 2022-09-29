@@ -4,7 +4,7 @@ from pygame import Surface
 from pygame.rect import Rect
 from pygame.sprite import AbstractGroup
 
-from base.objects.group import Group
+from robingame.objects.group import Group
 
 
 class Entity(pygame.sprite.Sprite):

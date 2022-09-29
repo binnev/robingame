@@ -3,8 +3,8 @@ from pathlib import Path
 from pygame.color import Color
 from pygame.surface import Surface
 
-from base.image import load_spritesheet, scale_image, empty_image
-from base.text.exceptions import TextError
+from robingame.image import load_spritesheet, scale_image, empty_image
+from robingame.text.exceptions import TextError
 
 
 class Font:

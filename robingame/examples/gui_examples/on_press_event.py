@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 import pygame.mouse
 
-from base.gui.button import Button
-from base.input import EventQueue
-from base.objects import Game, Group
-from base.utils import mouse_hovering_over
+from robingame.gui.button import Button
+from robingame.input import EventQueue
+from robingame.objects import Game, Group
+from robingame.utils import mouse_hovering_over
 
 
 class OnPressEventExample(Game):

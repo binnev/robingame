@@ -1,9 +1,9 @@
 import numpy
 import pygame
 
-from base.animation import ease_in_out
-from base.objects import Entity, Group, EventQueue
-from base.utils import mouse_hovering_over
+from robingame.animation import ease_in_out
+from robingame.objects import Entity, Group, EventQueue
+from robingame.utils import mouse_hovering_over
 
 
 class Menu(Entity):

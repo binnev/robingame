@@ -2,8 +2,8 @@ import pygame
 from pygame import Rect
 from pygame.color import Color
 
-from base.objects.entity import PhysicalEntity
-from base.utils import circle_surf
+from robingame.objects.entity import PhysicalEntity
+from robingame.utils import circle_surf
 
 
 class Particle(PhysicalEntity):

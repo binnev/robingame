@@ -4,8 +4,8 @@ import pygame
 from pygame import Color
 from pygame.rect import Rect
 
-from base.objects import PhysicalEntity
-from base.utils import pulsing_value
+from robingame.objects import PhysicalEntity
+from robingame.utils import pulsing_value
 
 
 class Button(PhysicalEntity):

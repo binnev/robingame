@@ -4,9 +4,9 @@ import pygame
 from pygame.color import Color
 from pygame.surface import Surface
 
-from base.input import EventQueue
-from base.objects.entity import Entity, Group
-from base.objects.helpers import FpsTracker
+from robingame.input import EventQueue
+from robingame.objects.entity import Entity, Group
+from robingame.objects.helpers import FpsTracker
 
 
 class Game(Entity):

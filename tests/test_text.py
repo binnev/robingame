@@ -2,9 +2,9 @@ from pathlib import Path
 
 from pygame.surface import Surface
 
-from base.text.font import Font
+from robingame.text.font import Font
 
-TESTFONT = Path(__file__).parent.parent / "text/assets/test_font.png"
+TESTFONT = Path(__file__).parent.parent / "robingame/text/assets/test_font.png"
 assert TESTFONT.exists()
 
 

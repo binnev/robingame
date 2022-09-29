@@ -1,8 +1,8 @@
 import pygame.mouse
 
-from base.gui.button import Button
-from base.objects import Game, Group, Particle
-from base.utils import mouse_hovering_over, random_int
+from robingame.gui.button import Button
+from robingame.objects import Game, Group, Particle
+from robingame.utils import mouse_hovering_over, random_int
 
 
 class ComplicatedOnPressHookExample(Game):

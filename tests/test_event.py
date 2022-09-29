@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pygame.event
 from pygame.event import EventType, Event
-from base.input.event import EventQueue
+from robingame.input.event import EventQueue
 
 
 @patch("pygame.event.get")
