@@ -9,12 +9,13 @@ class Version(_Version):
         self.notes = notes or []
 
 
-VERSION_0_0_1 = Version(notes=["Initial version."])
+VERSION_0_0_5 = Version(notes=["Added record decorator that saves screenshots and makes videos."])
+VERSION_0_0_4 = Version(notes=["MANIFEST.in is working; png files are included in the install."])
+VERSION_0_0_3 = Version(notes=["Still trying to include .pngs..."])
 VERSION_0_0_2 = Version(
     notes=[
         "Trying to get .png files to be included in the install, "
         "because this will allow the sample fonts to work out of the box."
     ]
 )
-VERSION_0_0_3 = Version(notes=["Still trying to include .pngs..."])
-VERSION_0_0_4 = Version(notes=["MANIFEST.in is working; png files are included in the install."])
+VERSION_0_0_1 = Version(notes=["Initial version."])
