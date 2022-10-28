@@ -10,6 +10,8 @@ def ease(
     function: Callable,
 ) -> float:
     """see https://easings.net/ for functions"""
+    if x > num:
+        raise ValueError(f"{x=} is greater than {num=}")
     distance = stop - start
     progress = x / num
     value = start + function(progress) * distance
