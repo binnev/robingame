@@ -1,27 +1,34 @@
 import numpy
+from typing import Callable
 
 
-def ease(start, stop, num, function) -> numpy.array:
+def ease(
+    x: int,
+    start: int | float,
+    stop: int | float,
+    num: int,
+    function: Callable,
+) -> float:
     """see https://easings.net/ for functions"""
     distance = stop - start
-    ease = numpy.array(list(map(function, numpy.linspace(0, 1, num))))
-    output = start + ease * distance
-    return output
+    progress = x / num
+    value = start + function(progress) * distance
+    return value
 
 
-def ease_in(start, stop, num, power=3) -> numpy.array:
-    return ease(start, stop, num, function=lambda x: x**power)
+def ease_in(x, start, stop, num, power=3) -> numpy.array:
+    f = lambda x: x**power
+    return ease(x=x, start=start, stop=stop, num=num, function=f)
 
 
-def ease_out(start, stop, num, power=3) -> numpy.array:
-    return ease(start, stop, num, function=lambda x: 1 - (1 - x) ** power)
+def ease_out(x, start, stop, num, power=3) -> numpy.array:
+    f = lambda x: 1 - (1 - x) ** power
+    return ease(x=x, start=start, stop=stop, num=num, function=f)
 
 
-def ease_in_out(start, stop, num, power=3) -> numpy.array:
-    def _in_out(x, power):
-        return 4 * x**power if x < 0.5 else 1 - (-2 * x + 2) ** power / 2
-
-    return ease(start, stop, num, function=lambda x: _in_out(x, power))
+def ease_in_out(x, start, stop, num, power=3) -> numpy.array:
+    f = lambda x: 4 * x**power if x < 0.5 else 1 - (-2 * x + 2) ** power / 2
+    return ease(x=x, start=start, stop=stop, num=num, function=f)
 
 
 def damping_response(t, amp=0.5, damping=0.4, phase=0, freq=0.3):
