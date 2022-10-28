@@ -68,9 +68,9 @@ class MyMenu(Menu):
             #  each tick
             centerx = self.game_rect.centerx
             far_left = self.game_rect.left - self.button_width
-            xs = ease_in_out(far_left, centerx, self.transition_length)
+            x = ease_in_out(x=self.tick, start=far_left, stop=centerx, num=self.transition_length)
             for button in self.buttons:
-                button.x = xs[self.tick]
+                button.x = x
         except IndexError:
             self.state = self.state_idle
 
@@ -82,9 +82,11 @@ class MyMenu(Menu):
 
                 centerx = self.game_rect.centerx
                 far_right = self.game_rect.right + self.button_width
-                xs = ease_in_out(centerx, far_right, self.transition_length)
+                x = ease_in_out(
+                    x=self.tick, start=centerx, stop=far_right, num=self.transition_length
+                )
                 for button in self.buttons:
-                    button.x = xs[self.tick]
+                    button.x = x
             except IndexError:
                 self.kill()
 
