@@ -34,14 +34,14 @@ class GamecubeControllerVisualizer(Entity):
     def update(self):
         super().update()
         mapping = {
-            self.input.LEFT: dict(x=self.x, y=self.y + 50),
-            self.input.RIGHT: dict(x=self.x + 40, y=self.y + 50),
-            self.input.UP: dict(x=self.x + 20, y=self.y + 30),
-            self.input.DOWN: dict(x=self.x + 20, y=self.y + 30 + 40),
-            self.input.C_LEFT: dict(x=self.x + 70, y=self.y + 80 + 10, radius=10),
-            self.input.C_RIGHT: dict(x=self.x + 70 + 20, y=self.y + 80 + 10, radius=10),
-            self.input.C_UP: dict(x=self.x + 70 + 10, y=self.y + 80, radius=10),
-            self.input.C_DOWN: dict(x=self.x + 70 + 10, y=self.y + 80 + 20, radius=10),
+            self.input.LEFT: dict(x=10, y=10 + 50),
+            self.input.RIGHT: dict(x=10 + 40, y=10 + 50),
+            self.input.UP: dict(x=10 + 20, y=10 + 30),
+            self.input.DOWN: dict(x=10 + 20, y=10 + 30 + 40),
+            self.input.C_LEFT: dict(x=10 + 70, y=10 + 80 + 10, radius=10),
+            self.input.C_RIGHT: dict(x=10 + 70 + 20, y=10 + 80 + 10, radius=10),
+            self.input.C_UP: dict(x=10 + 70 + 10, y=10 + 80, radius=10),
+            self.input.C_DOWN: dict(x=10 + 70 + 10, y=10 + 80 + 20, radius=10),
         }
         for input, kwargs in mapping.items():
             if input.is_smashed:
@@ -50,26 +50,23 @@ class GamecubeControllerVisualizer(Entity):
     def draw(self, surface, debug=False):
         background = Surface((160, 120))
         background.fill(Color("black"))
-        rect = background.get_rect()
-        rect.topleft = self.x - 10, self.y - 10
-        surface.blit(background, rect)
 
         # buttons
-        self.draw_button(surface, (20, 20), Color("cyan"), self.input.A, (100, 50))
-        self.draw_button(surface, (10, 10), Color("red"), self.input.B, (100, 80))
-        self.draw_button(surface, (20, 10), Color("gray"), self.input.Y, (100, 30))
-        self.draw_button(surface, (10, 20), Color("gray"), self.input.X, (130, 50))
-        self.draw_button(surface, (10, 10), Color("gray"), self.input.START, (65, 50))
-        self.draw_button(surface, (10, 10), Color("purple"), self.input.Z, (130, 30))
-        self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_UP, (40 + 8, 87 - 8))
-        self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_DOWN, (40 + 8, 87 + 8))
-        self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_LEFT, (40, 87))
-        self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_RIGHT, (40 + 16, 87))
+        self.draw_button(background, (20, 20), Color("cyan"), self.input.A, (100, 50))
+        self.draw_button(background, (10, 10), Color("red"), self.input.B, (100, 80))
+        self.draw_button(background, (20, 10), Color("gray"), self.input.Y, (100, 30))
+        self.draw_button(background, (10, 20), Color("gray"), self.input.X, (130, 50))
+        self.draw_button(background, (10, 10), Color("gray"), self.input.START, (65, 50))
+        self.draw_button(background, (10, 10), Color("purple"), self.input.Z, (130, 30))
+        self.draw_button(background, (7, 7), Color("gray"), self.input.D_PAD_UP, (40 + 8, 87 - 8))
+        self.draw_button(background, (7, 7), Color("gray"), self.input.D_PAD_DOWN, (40 + 8, 87 + 8))
+        self.draw_button(background, (7, 7), Color("gray"), self.input.D_PAD_LEFT, (40, 87))
+        self.draw_button(background, (7, 7), Color("gray"), self.input.D_PAD_RIGHT, (40 + 16, 87))
 
-        super().draw(surface, debug)
+        super().draw(background, debug)
         # sticks
         self.draw_joystick(
-            surface,
+            background,
             (40, 40),
             Color("gray"),
             x_axis=(self.input.LEFT, self.input.RIGHT),
@@ -77,7 +74,7 @@ class GamecubeControllerVisualizer(Entity):
             xy=(0, 30),
         )
         self.draw_joystick(
-            surface,
+            background,
             (20, 20),
             Color("orange"),
             x_axis=(self.input.C_LEFT, self.input.C_RIGHT),
@@ -86,7 +83,7 @@ class GamecubeControllerVisualizer(Entity):
         )
 
         self.draw_trigger(
-            surface,
+            background,
             (40, 20),
             Color("gray"),
             axis=self.input.R_AXIS,
@@ -94,13 +91,16 @@ class GamecubeControllerVisualizer(Entity):
             xy=(100, 0),
         )
         self.draw_trigger(
-            surface,
+            background,
             (40, 20),
             Color("gray"),
             axis=self.input.L_AXIS,
             button=self.input.L,
             xy=(0, 0),
         )
+        rect = background.get_rect()
+        rect.topleft = self.x, self.y
+        surface.blit(background, rect)
 
     def draw_trigger(self, surface, size, color, axis, button, xy):
         dx, dy = xy
@@ -108,7 +108,7 @@ class GamecubeControllerVisualizer(Entity):
         bbox = Surface(size)
         bbox.fill(color)
         bbox_rect = bbox.get_rect()
-        bbox_rect.topleft = (self.x + dx, self.y + dy)
+        bbox_rect.topleft = (dx + 10, dy + 10)
         surface.blit(bbox, bbox_rect)
 
         btn = Surface((size[0], size[1] - (size[1] * 0.8 * axis.value)))
@@ -127,7 +127,7 @@ class GamecubeControllerVisualizer(Entity):
         bbox.fill(color)
         bbox_rect = bbox.get_rect()
         dx, dy = xy
-        bbox_rect.topleft = (self.x + dx, self.y + dy)
+        bbox_rect.topleft = (dx + 10, dy + 10)
         surface.blit(bbox, bbox_rect)
 
         stick = Surface(tuple(s // 2 for s in size))
@@ -146,7 +146,7 @@ class GamecubeControllerVisualizer(Entity):
         btn.fill(Color("white") if input.is_down else color)
         rect = btn.get_rect()
         dx, dy = xy
-        rect.topleft = (self.x + dx, self.y + dy)
+        rect.topleft = (dx + 10, dy + 10)
         surface.blit(btn, rect)
 
 
@@ -163,8 +163,8 @@ if __name__ == "__main__":
                 self.objects,
             ]
             self.visualizer = GamecubeControllerVisualizer(
-                x=100,
-                y=200,
+                x=0,
+                y=0,
                 input=self.input,
                 groups=[self.objects],
             )
