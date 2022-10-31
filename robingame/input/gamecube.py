@@ -74,8 +74,8 @@ class GamecubeControllerReader:
     """
 
     # input ranges. Use these to set minimum (i.e. dead zone) and maximum input values
-    GREY_STICK_INPUT_RANGE = (0.1, 0.86)
-    YELLOW_STICK_INPUT_RANGE = (0.1, 0.86)
+    GREY_STICK_INPUT_RANGE = (0.1, 0.77)
+    YELLOW_STICK_INPUT_RANGE = (0.1, 0.67)
     TRIGGER_INPUT_RANGE = (-0.5, 1)
 
     def __init__(self, joystick_id: int):
@@ -313,7 +313,7 @@ class ButtonInput:
 
 class AxisInput(ButtonInput):
     smash_threshold = 0.9
-    smash_window = 2  # frames in which to reach smash_threshold
+    smash_window = 3  # frames in which to reach smash_threshold
 
     @property
     def is_smashed(self) -> bool:
@@ -373,7 +373,7 @@ class GamecubeController(InputQueue):
             if issubclass(_class, GamecubeController) and isinstance(attr, ButtonInput)
         }
         for name, attr in button_inputs.items():
-            inp = ButtonInput(attr.id, parent=self)
+            inp = attr.__class__(attr.id, parent=self)
             setattr(self, name, inp)
 
     def get_new_values(self):

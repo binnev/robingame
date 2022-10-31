@@ -95,7 +95,8 @@ class GamecubeControllerVisualizer(Entity):
         surface.blit(bbox, bbox_rect)
 
         stick = Surface(tuple(s // 2 for s in size))
-        stick.fill(brighten_color(color, 100))
+        is_smashed = any(input.is_smashed for input in (left, right, up, down))
+        stick.fill(Color("red") if is_smashed else brighten_color(color, 100))
         rect = stick.get_rect()
         rect.center = (
             bbox_rect.centerx + x_axis * size[0] // 2,
