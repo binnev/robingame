@@ -6,7 +6,15 @@ from pygame.surface import Surface
 
 from robingame.image import brighten_color
 from robingame.input import GamecubeController
-from robingame.objects import Entity, Game, Group
+from robingame.objects import Entity, Game, Group, Particle
+
+
+class SmashParticle(Particle):
+    radius = 20
+    decay = 2
+    color = Color("red")
+    gravity = 0
+    friction = 0
 
 
 class GamecubeControllerVisualizer(Entity):
@@ -17,8 +25,29 @@ class GamecubeControllerVisualizer(Entity):
         self.x = x
         self.y = y
         self.input = input
+        self.particles = Group()
+        self.child_groups = [
+            self.particles,
+        ]
+
+    def update(self):
+        super().update()
+        mapping = {
+            self.input.LEFT: dict(x=self.x, y=self.y + 50),
+            self.input.RIGHT: dict(x=self.x + 40, y=self.y + 50),
+            self.input.UP: dict(x=self.x + 20, y=self.y + 30),
+            self.input.DOWN: dict(x=self.x + 20, y=self.y + 30 + 40),
+            self.input.C_LEFT: dict(x=self.x + 70, y=self.y + 80 + 10, radius=10),
+            self.input.C_RIGHT: dict(x=self.x + 70 + 20, y=self.y + 80 + 10, radius=10),
+            self.input.C_UP: dict(x=self.x + 70 + 10, y=self.y + 80, radius=10),
+            self.input.C_DOWN: dict(x=self.x + 70 + 10, y=self.y + 80 + 20, radius=10),
+        }
+        for input, kwargs in mapping.items():
+            if input.is_smashed:
+                self.particles.add(SmashParticle(**kwargs))
 
     def draw(self, surface, debug=False):
+        super().draw(surface, debug)
         # buttons
         self.draw_button(surface, (20, 20), Color("cyan"), self.input.A, (100, 50))
         self.draw_button(surface, (10, 10), Color("red"), self.input.B, (100, 80))
