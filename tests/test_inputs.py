@@ -115,9 +115,10 @@ def test_buffered_inputs(input, expected_rising_edges, expected_falling_edges):
         ([1], False),  # only one entry; can't determine history
         ([0, 0.5], False),  # didn't reach the threshold
         ([0.5, 1], False),  # didn't start from low enough
-        ([0, 0.3, 0.6, 1], False),  # too slow
-        ([0, 1], True),
+        ([0, 0.3, 0.6, 0.8, 1], False),  # too slow
+        ([0, 0.3, 0.6, 1], True),
         ([0, 0.5, 1], True),
+        ([0, 1], True),
     ],
 )
 def test_axis_input_is_smashed(queue_contents, expected_value):
