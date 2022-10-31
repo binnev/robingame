@@ -74,8 +74,8 @@ class GamecubeControllerReader:
     """
 
     # input ranges. Use these to set minimum (i.e. dead zone) and maximum input values
-    GREY_STICK_INPUT_RANGE = (0.1, 0.86)
-    YELLOW_STICK_INPUT_RANGE = (0.1, 0.86)
+    GREY_STICK_INPUT_RANGE = (0.1, 0.77)
+    YELLOW_STICK_INPUT_RANGE = (0.1, 0.67)
     TRIGGER_INPUT_RANGE = (-0.5, 1)
 
     def __init__(self, joystick_id: int):
@@ -311,6 +311,20 @@ class ButtonInput:
         return bool(self.value)
 
 
+class AxisInput(ButtonInput):
+    smash_threshold = 0.9
+    smash_window = 3  # frames in which to reach smash_threshold
+
+    @property
+    def is_smashed(self) -> bool:
+        history = list(self.parent)[-1 - self.smash_window :]
+        history = [inputs[self.id] for inputs in history]
+        if history:
+            return history[-1] >= self.smash_threshold and history[0] <= 0.1
+        else:
+            return False
+
+
 class GamecubeController(InputQueue):
     """
     A wrapper around GamecubeControllerReader and InputQueue which leaves all the fiddly
@@ -321,22 +335,28 @@ class GamecubeController(InputQueue):
     """
 
     # input channels in CAPITALS to differentiate them from other methods
-    LEFT = ButtonInput(LEFT)
-    RIGHT = ButtonInput(RIGHT)
-    UP = ButtonInput(UP)
-    DOWN = ButtonInput(DOWN)
+    LEFT = AxisInput(LEFT)
+    RIGHT = AxisInput(RIGHT)
+    UP = AxisInput(UP)
+    DOWN = AxisInput(DOWN)
     A = ButtonInput(A)
     B = ButtonInput(B)
     X = ButtonInput(X)
     Y = ButtonInput(Y)
-    C_UP = ButtonInput(C_UP)
-    C_DOWN = ButtonInput(C_DOWN)
-    C_LEFT = ButtonInput(C_LEFT)
-    C_RIGHT = ButtonInput(C_RIGHT)
+    Z = ButtonInput(Z)
+    C_UP = AxisInput(C_UP)
+    C_DOWN = AxisInput(C_DOWN)
+    C_LEFT = AxisInput(C_LEFT)
+    C_RIGHT = AxisInput(C_RIGHT)
     START = ButtonInput(START)
     D_PAD_UP = ButtonInput(D_UP)
-    L = ButtonInput(L_AXIS)
-    R = ButtonInput(R_AXIS)
+    D_PAD_LEFT = ButtonInput(D_LEFT)
+    D_PAD_RIGHT = ButtonInput(D_RIGHT)
+    D_PAD_DOWN = ButtonInput(D_DOWN)
+    L = ButtonInput(L)
+    R = ButtonInput(R)
+    L_AXIS = ButtonInput(L_AXIS)
+    R_AXIS = ButtonInput(R_AXIS)
 
     def __init__(self, controller_id: int, queue_length=60):
         controller = GamecubeControllerReader(controller_id)
@@ -353,7 +373,7 @@ class GamecubeController(InputQueue):
             if issubclass(_class, GamecubeController) and isinstance(attr, ButtonInput)
         }
         for name, attr in button_inputs.items():
-            inp = ButtonInput(attr.id, parent=self)
+            inp = attr.__class__(attr.id, parent=self)
             setattr(self, name, inp)
 
     def get_new_values(self):
