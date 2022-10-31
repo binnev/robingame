@@ -15,6 +15,7 @@ class SmashParticle(Particle):
     color = Color("red")
     gravity = 0
     friction = 0
+    blit_flag = 0
 
 
 class GamecubeControllerVisualizer(Entity):
@@ -47,7 +48,12 @@ class GamecubeControllerVisualizer(Entity):
                 self.particles.add(SmashParticle(**kwargs))
 
     def draw(self, surface, debug=False):
-        super().draw(surface, debug)
+        background = Surface((160, 120))
+        background.fill(Color("black"))
+        rect = background.get_rect()
+        rect.topleft = self.x - 10, self.y - 10
+        surface.blit(background, rect)
+
         # buttons
         self.draw_button(surface, (20, 20), Color("cyan"), self.input.A, (100, 50))
         self.draw_button(surface, (10, 10), Color("red"), self.input.B, (100, 80))
@@ -60,6 +66,7 @@ class GamecubeControllerVisualizer(Entity):
         self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_LEFT, (40, 87))
         self.draw_button(surface, (7, 7), Color("gray"), self.input.D_PAD_RIGHT, (40 + 16, 87))
 
+        super().draw(surface, debug)
         # sticks
         self.draw_joystick(
             surface,
@@ -145,7 +152,9 @@ class GamecubeControllerVisualizer(Entity):
 
 if __name__ == "__main__":
 
-    class FooGame(Game):
+    class GCVizGame(Game):
+        screen_color = Color("darkgray")
+
         def __init__(self):
             super().__init__()
             self.input = GamecubeController(controller_id=0)
@@ -164,4 +173,4 @@ if __name__ == "__main__":
             super().read_inputs()
             self.input.read_new_inputs()
 
-    FooGame().main()
+    GCVizGame().main()
