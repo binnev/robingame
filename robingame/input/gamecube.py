@@ -311,6 +311,20 @@ class ButtonInput:
         return bool(self.value)
 
 
+class AxisInput(ButtonInput):
+    smash_threshold = 0.9
+    smash_window = 2  # frames in which to reach smash_threshold
+
+    @property
+    def is_smashed(self) -> bool:
+        history = list(self.parent)[-1 - self.smash_window :]
+        history = [inputs[self.id] for inputs in history]
+        if history:
+            return history[-1] >= self.smash_threshold and history[0] <= 0.1
+        else:
+            return False
+
+
 class GamecubeController(InputQueue):
     """
     A wrapper around GamecubeControllerReader and InputQueue which leaves all the fiddly
@@ -321,19 +335,19 @@ class GamecubeController(InputQueue):
     """
 
     # input channels in CAPITALS to differentiate them from other methods
-    LEFT = ButtonInput(LEFT)
-    RIGHT = ButtonInput(RIGHT)
-    UP = ButtonInput(UP)
-    DOWN = ButtonInput(DOWN)
+    LEFT = AxisInput(LEFT)
+    RIGHT = AxisInput(RIGHT)
+    UP = AxisInput(UP)
+    DOWN = AxisInput(DOWN)
     A = ButtonInput(A)
     B = ButtonInput(B)
     X = ButtonInput(X)
     Y = ButtonInput(Y)
     Z = ButtonInput(Z)
-    C_UP = ButtonInput(C_UP)
-    C_DOWN = ButtonInput(C_DOWN)
-    C_LEFT = ButtonInput(C_LEFT)
-    C_RIGHT = ButtonInput(C_RIGHT)
+    C_UP = AxisInput(C_UP)
+    C_DOWN = AxisInput(C_DOWN)
+    C_LEFT = AxisInput(C_LEFT)
+    C_RIGHT = AxisInput(C_RIGHT)
     START = ButtonInput(START)
     D_PAD_UP = ButtonInput(D_UP)
     D_PAD_LEFT = ButtonInput(D_LEFT)
