@@ -1,12 +1,11 @@
 from typing import Iterable
 
-import pygame
 from pygame.color import Color
 from pygame.surface import Surface
 
 from robingame.image import brighten_color
 from robingame.input import GamecubeController
-from robingame.objects import Entity, Game, Group, Particle
+from robingame.objects import Entity, Group, Particle
 
 
 class SmashParticle(Particle):
