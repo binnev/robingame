@@ -9,6 +9,7 @@ class Version(_Version):
         self.notes = notes or []
 
 
+VERSION_0_0_8 = Version(notes=["Added GameCube controller input visualizer."])
 VERSION_0_0_7 = Version(
     notes=["Modified animation ease functions so they generate a single value, not a whole array."]
 )
