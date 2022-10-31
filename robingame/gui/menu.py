@@ -2,7 +2,8 @@ import numpy
 import pygame
 
 from robingame.animation import ease_in_out
-from robingame.objects import Entity, Group, EventQueue
+from robingame.objects import Entity, Group
+from robingame.input import EventQueue
 from robingame.utils import mouse_hovering_over
 
 

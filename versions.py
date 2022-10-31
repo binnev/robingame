@@ -9,6 +9,8 @@ class Version(_Version):
         self.notes = notes or []
 
 
+VERSION_0_0_10 = Version(notes=["Fixed broken imports (again)."])
+VERSION_0_0_9 = Version(notes=["Fixed broken imports."])
 VERSION_0_0_8 = Version(notes=["Added GameCube controller input visualizer."])
 VERSION_0_0_7 = Version(
     notes=["Modified animation ease functions so they generate a single value, not a whole array."]
