@@ -33,7 +33,7 @@ def save_image_async(filename, img_string: bytes, size: tuple[int, int], output_
     pygame.image.save(image, str(output_dir / f"{filename}.png"))
 
 
-def save_images_async(images: list[Surface], output_dir: Path):
+def save_images_async(images: list[Surface], output_dir: Path, processes: int):
     stringified = (
         (
             pygame.image.tostring(image, "RGBA"),
@@ -41,7 +41,7 @@ def save_images_async(images: list[Surface], output_dir: Path):
         )
         for image in images
     )
-    with multiprocessing.Pool(processes=8) as pool:
+    with multiprocessing.Pool(processes=processes) as pool:
         result = pool.starmap(
             func=save_image_async,
             iterable=(
@@ -107,7 +107,7 @@ def decorate_draw(func, screenshots):
     return wrapped
 
 
-def decorate_main(func, screenshots: deque, output_dir: Path, filename: str):
+def decorate_main(func, screenshots: deque, output_dir: Path, filename: str, processes: int):
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         """Run the game as normal, but intercept the quit signal and save all the screenshots to
@@ -119,7 +119,7 @@ def decorate_main(func, screenshots: deque, output_dir: Path, filename: str):
             clean_empty_recordings_dir(output_dir)
             print(f"Saving {len(screenshots)} images...")
             t1 = time.perf_counter()
-            save_images_async(screenshots, output_dir)
+            save_images_async(screenshots, output_dir, processes=processes)
             t2 = time.perf_counter()
             print(f"Images saved in {t2-t1}s")
             print("Creating videos...")
@@ -136,6 +136,7 @@ def record(
     n_frames: int,
     output_dir: Path,
     filename="out",
+    processes=4,
 ):
     """
     Patch the Game's ._draw() and .main() methods so that we keep a screenshot of every frame,
@@ -151,6 +152,7 @@ def record(
             screenshots=screenshots,
             output_dir=output_dir,
             filename=filename,
+            processes=processes,
         )
         return cls
 
