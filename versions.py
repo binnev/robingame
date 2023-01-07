@@ -9,10 +9,10 @@ class Version(_Version):
         self.notes = notes or []
 
 
+VERSION_0_0_13 = Version(notes=["Corrected typing on ease functions."])
+VERSION_0_0_12 = Version(notes=["Fixed broken ; character in cellphone font"])
 VERSION_0_0_11 = Version(
-    notes=[
-        "@record decorator now allows you to specify number of processes for async image saving"
-    ]
+    notes=["@record decorator now allows you to specify number of processes for async image saving"]
 )
 VERSION_0_0_10 = Version(notes=["Fixed broken imports (again)."])
 VERSION_0_0_9 = Version(notes=["Fixed broken imports."])
