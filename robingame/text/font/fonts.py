@@ -25,7 +25,7 @@ cellphone_black = Font(
     filename=assets / "cellphone-black.png",
     image_size=(7, 9),
     letters=(
-        """!"#$%&'()*+,-./0123456789:'<=>?@"""
+        """!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
         + "[\]^_`"
         + string.ascii_lowercase
@@ -40,7 +40,7 @@ cellphone_white = Font(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
-        """!"#$%&'()*+,-./0123456789:'<=>?@"""
+        """!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
         + "[\]^_`"
         + string.ascii_lowercase
@@ -55,7 +55,7 @@ cellphone_white_mono = Font(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
-        """!"#$%&'()*+,-./0123456789:'<=>?@"""
+        """!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
         + "[\]^_`"
         + string.ascii_lowercase

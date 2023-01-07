@@ -15,7 +15,7 @@ talen als het IJslands en het Zweeds, om een soortgelijk
 
 klankverschijnsel
 weer
-te
+te;;;'''
 
 geven, of in niet-verwante talen als het Fins, het Hongaars of het Turks, om dezelfde e-, eu- en u-klank weer te geven, die echter niet het resultaat van hetzelfde klankverschijnsel zijn.
 """
