@@ -18,17 +18,17 @@ def ease(
     return value
 
 
-def ease_in(x, start, stop, num, power=3) -> numpy.array:
+def ease_in(x, start, stop, num, power=3) -> float:
     f = lambda x: x**power
     return ease(x=x, start=start, stop=stop, num=num, function=f)
 
 
-def ease_out(x, start, stop, num, power=3) -> numpy.array:
+def ease_out(x, start, stop, num, power=3) -> float:
     f = lambda x: 1 - (1 - x) ** power
     return ease(x=x, start=start, stop=stop, num=num, function=f)
 
 
-def ease_in_out(x, start, stop, num, power=3) -> numpy.array:
+def ease_in_out(x, start, stop, num, power=3) -> float:
     f = lambda x: 4 * x**power if x < 0.5 else 1 - (-2 * x + 2) ** power / 2
     return ease(x=x, start=start, stop=stop, num=num, function=f)
 
