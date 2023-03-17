@@ -9,22 +9,35 @@ from robingame.input.gamecube import (
     ButtonInput,
     AxisInput,
 )
-from robingame.input.queue import InputQueue
+from robingame.input.queue import InputQueue, Empty
+
+
+@patch("robingame.input.queue.InputQueue.get_new_values", return_value=(0, 1))
+def test_input_queue__get_new_values_for_iteration(mock_get_new_values):
+    queue = InputQueue()
+    values = queue._get_values_for_iteration(-1)
+    assert isinstance(values, Empty)
+    assert values[1] == 0
+
+    queue.update()
+    values = queue._get_values_for_iteration(-1)
+    assert not isinstance(values, Empty)
+    assert values[1] == 1
+    mock_get_new_values.assert_called()
 
 
 @patch("pygame.joystick.Joystick")
 @patch("robingame.input.gamecube.GamecubeControllerReader.get_values")
 def test_gamecube_controller_basic(mock_get_values, mock_joystick):
     mock_get_values.return_value = (1, 0)  # A down, B not down
-    pygame.init()
-
     controller = GamecubeController(controller_id=0)
-    controller.read_new_inputs()
+    controller.update()
     assert controller[0] == (1, 0)
     assert controller.is_down(gamecube.A) == 1
     assert controller.is_down(gamecube.B) == 0
     assert controller.A.is_down == 1
     assert controller.B.is_down == 0
+    mock_joystick.assert_called()
 
 
 @patch("pygame.joystick.Joystick")
@@ -43,7 +56,7 @@ def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
         B2 = ButtonInput(gamecube.B)
 
     subclass = Subclass(controller_id=0)
-    subclass.read_new_inputs()
+    subclass.update()
     assert subclass[0] == (1, 0)
     assert subclass.is_down(gamecube.A) == 1
     assert subclass.is_down(gamecube.B) == 0
@@ -56,7 +69,7 @@ def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
     assert subclass.B.is_down == 0
 
     subclass2 = Subclass2(controller_id=0)
-    subclass2.read_new_inputs()
+    subclass2.update()
     assert subclass2[0] == (1, 0)
     assert subclass2.is_down(gamecube.A) == 1
     assert subclass2.is_down(gamecube.B) == 0
@@ -68,7 +81,7 @@ def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
     assert subclass2.B.is_down == 0
 
     subclass3 = Subclass3(controller_id=0)
-    subclass3.read_new_inputs()
+    subclass3.update()
     assert subclass3[0] == (1, 0)
     assert subclass3.is_down(gamecube.A) == 1
     assert subclass3.is_down(gamecube.B) == 0
@@ -79,6 +92,7 @@ def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
         assert subclass3.A3.is_down == 1
     assert subclass3.B.is_down == 0
     assert subclass3.B2.is_down == 0
+    mock_joystick.assert_called()
 
 
 @pytest.mark.parametrize(
@@ -97,7 +111,7 @@ def test_gamecube_controller_subclasses(mock_get_values, mock_joystick):
 )
 def test_buffered_inputs(input, expected_rising_edges, expected_falling_edges):
     BUFFER_LENGTH = 5
-    queue = InputQueue(queue_length=100)
+    queue = InputQueue(maxlen=100)
     for value in input:
         queue.append([value])
 
@@ -122,7 +136,7 @@ def test_buffered_inputs(input, expected_rising_edges, expected_falling_edges):
     ],
 )
 def test_axis_input_is_smashed(queue_contents, expected_value):
-    queue = InputQueue(queue_length=100)
+    queue = InputQueue()
     for value in queue_contents:
         queue.append([value])
     axis = AxisInput(id=0, parent=queue)

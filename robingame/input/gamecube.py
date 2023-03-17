@@ -362,7 +362,7 @@ class GamecubeController(InputQueue):
         controller = GamecubeControllerReader(controller_id)
         self.controller_id = controller_id
         self.controller = controller
-        super().__init__(queue_length)
+        super().__init__(maxlen=queue_length)
 
         # for each parentless SingleInput declared on the class, create a new SingleInput
         # instance with self as parent.
