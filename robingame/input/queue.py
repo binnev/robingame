@@ -1,5 +1,6 @@
 from collections import deque
 
+from robingame.input.device import NormalisedValue
 from robingame.utils import count_edges
 
 
@@ -13,9 +14,11 @@ class Empty(tuple):
 
 class InputQueue(deque):
     """
-    Provides additional functionality beyond pygame.key.get_pressed().
-    - Maintains a buffer of the last few inputs
-    - Calculates which keys have been pressed and released this tick
+    Stores the history of an input device's state over the past few iterations.
+    Provides helper methods is_down, is_pressed, is_released, etc.
+
+    For a simple two-button input device where button A=0 and button B=1, the contents of an
+    InputQueue with 5 iterations would look like this:
                Buttons:
     Index  |   A   B    |   Notes
     -------|----------- |------------------
@@ -29,14 +32,14 @@ class InputQueue(deque):
     def __init__(self, maxlen=5):
         super().__init__(maxlen=maxlen)
 
-    def get_new_values(self) -> tuple[int]:
+    def get_new_values(self) -> tuple[NormalisedValue]:
         """Subclasses should implement this. It should be something like pygame.key.get_pressed()"""
         raise NotImplementedError
 
     def update(self):
         self.append(self.get_new_values())
 
-    def _get_values_for_iteration(self, iteration: int) -> tuple[int]:
+    def _get_values_for_iteration(self, iteration: int) -> tuple[NormalisedValue]:
         """This prevents IndexErrors on the first few iterations of the game when there's nothing
         in the queue yet."""
         try:
@@ -45,12 +48,12 @@ class InputQueue(deque):
             return Empty()
 
     @property
-    def current(self) -> tuple[int]:
+    def current(self) -> tuple[NormalisedValue]:
         """Get the state of all the buttons in the current iteration"""
         return self._get_values_for_iteration(-1)
 
     @property
-    def previous(self) -> tuple[int]:
+    def previous(self) -> tuple[NormalisedValue]:
         """Get the state of all the buttons one iteration ago"""
         return self._get_values_for_iteration(-2)
 
