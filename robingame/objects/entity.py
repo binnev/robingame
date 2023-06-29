@@ -3,6 +3,7 @@ from pygame import Color
 from pygame import Surface
 from pygame.rect import Rect
 from pygame.sprite import AbstractGroup
+from typing import Callable
 
 from robingame.objects.group import Group
 
@@ -20,9 +21,8 @@ class Entity(pygame.sprite.Sprite):
     layers
     """
 
-    _state: "method" = lambda *args, **kwargs: None
+    _state: Callable = lambda *args, **kwargs: None
     child_groups: list  # groups of child Entities belonging to this entity
-    parent_groups: list  # groups of which this Entity is a member
     tick: int = 0  # iterations of the main game loop
     parental_name = "parent"
     debug_color = Color("red")
@@ -69,14 +69,6 @@ class Entity(pygame.sprite.Sprite):
         state."""
         self._state = new_state
         self.tick = 0
-
-    @property
-    def parent_groups(self):
-        return super().groups()
-
-    @property
-    def groups(self):
-        raise Exception("NO")
 
     def __repr__(self):
         # The `_Sprite__g` is necessary because of name mangling in subclasses I think
