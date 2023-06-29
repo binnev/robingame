@@ -162,22 +162,6 @@ def mouse_hovering_over(element):
     return element.rect.collidepoint(mouse_x, mouse_y)
 
 
-class MyEnumMeta(enum.EnumMeta):
-    """
-    Incredibly, enum.Enum does not have a __contains__ method, so we can't do stuff like:
-    class Colours(Enum):
-        ...
-    assert "red" in Colours
-    """
-
-    def __contains__(cls, member):
-        return any(x.value == member for x in cls)
-
-
-class Enum(enum.Enum, metaclass=MyEnumMeta):
-    pass
-
-
 def circle_surf(radius, color):
     radius = int(radius)
     surf = Surface((radius * 2, radius * 2))
