@@ -5,7 +5,7 @@ from pygame.surface import Surface
 
 from robingame.image import brighten_color
 from robingame.input import GamecubeController
-from robingame.objects import Entity, Group, Particle
+from robingame.objects import Entity, Group, Particle, Game
 
 
 class SmashParticle(Particle):
@@ -158,9 +158,7 @@ if __name__ == "__main__":
             super().__init__()
             self.input = GamecubeController(controller_id=0)
             self.objects = Group()
-            self.child_groups = [
-                self.objects,
-            ]
+            self.child_groups = [self.objects]
             self.visualizer = GamecubeControllerVisualizer(
                 x=0,
                 y=0,
