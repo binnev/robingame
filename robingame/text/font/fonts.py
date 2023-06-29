@@ -14,7 +14,7 @@ test_font = Font(
     letters=(
         string.ascii_uppercase
         + string.ascii_lowercase
-        + "1234567890-=!@#$%^&*()_+[]\;',./{}|:\"<>?~`"
+        + r"1234567890-=!@#$%^&*()_+[]\;',./{}|:\"<>?~`"
     ),
     trim=True,
     xpad=1,
@@ -27,9 +27,9 @@ cellphone_black = Font(
     letters=(
         """!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
-        + "[\]^_`"
+        + r"[\]^_`"
         + string.ascii_lowercase
-        + "{|}~"
+        + r"{|}~"
     ),
     xpad=1,
     colorkey=-1,
@@ -40,11 +40,11 @@ cellphone_white = Font(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
-        """!"#$%&'()*+,-./0123456789:;<=>?@"""
+        r"""!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
-        + "[\]^_`"
+        + r"[\]^_`"
         + string.ascii_lowercase
-        + "{|}~"
+        + r"{|}~"
     ),
     xpad=1,
     colorkey=-1,
@@ -55,11 +55,11 @@ cellphone_white_mono = Font(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
-        """!"#$%&'()*+,-./0123456789:;<=>?@"""
+        r"""!"#$%&'()*+,-./0123456789:;<=>?@"""
         + string.ascii_uppercase
-        + "[\]^_`"
+        + r"[\]^_`"
         + string.ascii_lowercase
-        + "{|}~"
+        + r"{|}~"
     ),
     colorkey=-1,
 )
