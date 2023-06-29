@@ -2,12 +2,12 @@ import pygame
 
 
 class Group(pygame.sprite.Group):
-    """Container for multiple sprite objects."""
+    """Container for multiple Entity objects."""
 
     def update(self, *args):
         super().update(*args)
 
-    def draw(self, surface, debug=False):
+    def draw(self, surface: pygame.Surface, debug: bool = False):
         """Draws all of the member sprites onto the given surface."""
         sprites = self.sprites()
         for sprite in sprites:
