@@ -245,31 +245,6 @@ class SparseMatrix(dict):
     def copy(self) -> "SparseMatrix":
         return SparseMatrix(super().copy())
 
-    def scale_to_screen(self, screen_size: (int, int)) -> (float, int, int):
-        """
-        Calculate the scaling factor and x/y offset required to blit a group of pixels
-        representing self onto a screen
-        """
-        screen_width, screen_height = screen_size
-        self_width, self_height = self.size
-        xlim, ylim = self.limits
-        x_scaling = screen_width // self_width
-        y_scaling = screen_height // self_height
-        scaling = max(1, min(x_scaling, y_scaling))
-
-        x_offset = screen_width // 2 - (xlim[0] + self_width // 2) * scaling
-        y_offset = screen_height // 2 - (ylim[0] + self_height // 2) * scaling
-        return scaling, x_offset, y_offset
-
-    def screen_coords(self, xy, scaling, x_offset, y_offset) -> tuple[int, int]:
-        """
-        Convert col/row number (xy) into screen coordinates (in pixels)
-        """
-        x, y = xy
-        screen_x = x_offset + x * scaling
-        screen_y = y_offset + y * scaling
-        return screen_x, screen_y
-
 
 def draw_text(s: str, surface: Surface, position, font, color, antialias=False):
     text_bitmap = font.render(s, antialias, color)
