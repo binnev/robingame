@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Callable
 
 from pygame import Surface
 
@@ -19,11 +18,10 @@ class SpriteAnimation:
     """
 
     images: list[Surface] | None
-    source: Callable | None
 
     def __init__(
         self,
-        images: [Surface] = None,
+        images: list[Surface] = None,
         scale: float = None,
         flip_x: bool = False,
         flip_y: bool = False,
@@ -133,54 +131,3 @@ class SpriteAnimation:
 
     def __len__(self):
         return len(self.images)
-
-
-class SpriteDict(dict):
-    """
-    Takes a folder and list of files as input, and handles the creation of SpriteAnimations.
-    """
-
-    def __init__(
-        self,
-        folder: Path | str,
-        size: (int, int) = None,
-        file_mapping: dict = None,
-        scale: int = 1,
-        colormap: dict = None,
-        create_flipped_versions: bool = False,
-        type="spritesheet",
-    ):
-        """
-        Create SpriteSheet for each file, but don't trigger .load() yet.
-        """
-        super().__init__()
-        self.scale = scale
-        self.image_size = size
-        self.colormap = colormap
-        self.create_flipped_versions = create_flipped_versions
-        folder = Path(folder)
-        self.folder = folder
-        self.type = type
-        self.sprite_sheets = dict()
-        if file_mapping:
-            for key, filename in file_mapping.items():
-                self.register(**{key: filename})
-
-    def register(self, **kwargs):
-        for key, filename in kwargs.items():
-            if self.type == "spritesheet":  # todo: add other options
-                self[key] = unflipped = SpriteAnimation.from_spritesheet(
-                    self.folder / filename,
-                    image_size=self.image_size,
-                    colormap=self.colormap,
-                    scale=self.scale,
-                )
-                if self.create_flipped_versions:
-                    self[f"{key}_right"] = unflipped
-                    self[f"{key}_left"] = SpriteAnimation.from_spritesheet(
-                        self.folder / filename,
-                        image_size=self.image_size,
-                        colormap=self.colormap,
-                        scale=self.scale,
-                        flip_x=True,
-                    )
