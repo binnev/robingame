@@ -9,7 +9,7 @@ def cleanup():
             shutil.rmtree(folder)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cleanup()
     subprocess.run("python -m build".split())
     subprocess.run("twine upload dist/*".split())

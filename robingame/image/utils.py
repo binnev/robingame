@@ -110,7 +110,6 @@ def flip_images(images: [Surface], flip_x=False, flip_y=False):
 
 
 def recolor_image(surface: Surface, color_mapping: dict) -> [Surface]:
-
     # make sure the colourmap has alpha channel on all colours
     color_mapping = {pad_alpha(k): pad_alpha(v) for k, v in color_mapping.items()}
     width, height = surface.get_size()

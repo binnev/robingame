@@ -80,7 +80,6 @@ class MyMenu(Menu):
             if next_scene:
                 self.game.add_scene(next_scene)
             try:
-
                 centerx = self.game_rect.centerx
                 far_right = self.game_rect.right + self.button_width
                 x = ease_in_out(
