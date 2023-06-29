@@ -91,10 +91,6 @@ def outline_image(surface: Surface):
     return mask.outline()
 
 
-def ticks_to_frames(tick, ticks_per_frame):
-    return tick // ticks_per_frame
-
-
 def draw_arrow(surface, origin, angle_deg, color=None, length=50):
     """angle needs to be in degrees"""
     arrow_xy = arrow_coords(length, length // 10, length // 4)
