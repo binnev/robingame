@@ -1,7 +1,6 @@
 import time
 from collections import deque
 
-import pygame
 from pygame.color import Color
 from pygame.surface import Surface
 
@@ -14,6 +13,7 @@ class FpsTracker(Entity):
 
     buffer_length = 60
     font = fonts.cellphone_black
+    fps: int
 
     def __init__(self, *groups) -> None:
         super().__init__(*groups)
