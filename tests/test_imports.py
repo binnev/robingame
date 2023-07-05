@@ -2,7 +2,7 @@ from robingame.gui import Button, Menu
 from robingame.gui.menu import MyMenu
 from robingame.image import SpriteAnimation
 from robingame.input import InputQueue, EventQueue, KeyboardInputQueue, GamecubeController
-from robingame.objects import Game, Entity, PhysicalEntity, FpsTracker, Group, Particle
+from robingame.objects import Game, Entity, FpsTracker, Group, Particle
 from robingame.text.font import Font, fonts
 
 
@@ -10,7 +10,6 @@ def test_imports():
     assert (
         Game,
         Entity,
-        PhysicalEntity,
         Group,
         FpsTracker,
         Particle,
