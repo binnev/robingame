@@ -1,6 +1,7 @@
 import pygame.mouse
 
 from robingame.examples.gui_examples.coloured_button_effects import MyButton
+from robingame.gui import Menu
 from robingame.objects import Game, Group, Particle
 from robingame.utils import mouse_hovering_over, random_int
 
@@ -16,10 +17,10 @@ class ComplicatedOnPressHookExample(Game):
 
     def __init__(self):
         super().__init__()
-        self.buttons = Group()
+        self.scenes = Group()
         self.particles = Group()
-        self.child_groups += [self.buttons, self.particles]
-        self.buttons.add(
+        menu = Menu()
+        menu.buttons.add(
             MyButton(
                 x=200,
                 y=100,
@@ -37,18 +38,8 @@ class ComplicatedOnPressHookExample(Game):
                 on_release=(lambda button: self.particles.kill()),
             )
         )
-
-    def update(self):
-        super().update()
-
-        # button manager stuff
-        for button in self.buttons:
-            if mouse_hovering_over(button):
-                button.is_focused = True
-                button.is_pressed = pygame.mouse.get_pressed()[0]
-            else:
-                button.is_focused = False
-                button.is_pressed = False
+        self.child_groups += [self.scenes, self.particles]
+        self.scenes.add(menu)
 
 
 class Flash(Particle):
