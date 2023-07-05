@@ -28,9 +28,9 @@ class ParticleExample(Game):
                 Particle(
                     x=x,
                     y=y,
-                    # radius=10,
-                    color=Color("red"),
-                    decay=0.0001,
+                    radius=30,
+                    color=Color("white"),
+                    decay=0.1,
                 )
             )
         if middle:

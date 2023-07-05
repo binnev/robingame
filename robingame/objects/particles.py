@@ -12,6 +12,7 @@ class Particle(Entity):
     decay: float = 0.0
     radius: float = 1
     color: Color
+    debug_color = Color("red")
 
     def __init__(
         self,
@@ -54,11 +55,18 @@ class Particle(Entity):
         image_rect.center = self.x, self.y
         surface.blit(surf, image_rect, special_flags=self.blit_flag)
         if debug:
-            pygame.draw.circle(
+            # bounding box
+            pygame.draw.rect(
                 surface,
-                color=Color("red"),
-                center=(self.x, self.y),
-                radius=2,
+                color=self.debug_color,
+                rect=image_rect,
+                width=1,
+            )
+            # center
+            pygame.draw.rect(
+                surface,
+                color=self.debug_color,
+                rect=(*image_rect.center, 2, 2),
             )
 
     @property
