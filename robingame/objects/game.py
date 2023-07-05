@@ -26,11 +26,7 @@ class Game(Entity):
     def __init__(self):
         super().__init__()
         pygame.init()
-
-        self.scenes = Group()
         self.fps_tracker = FpsTracker()
-        self.child_groups = [self.scenes]
-
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption(self.window_caption)
         self.clock = pygame.time.Clock()
