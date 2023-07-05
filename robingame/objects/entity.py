@@ -37,7 +37,7 @@ class Entity(pygame.sprite.Sprite):
     child_groups: list[Group]  # groups of child Entities belonging to this entity
     tick: int = 0  # number of game loop iterations elapsed in the current state
 
-    def __init__(self, groups: Iterable[Group] = ()) -> None:
+    def __init__(self, groups: Iterable[Group] = ()):
         super().__init__(*groups)
         self.child_groups = []
 
