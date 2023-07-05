@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 import pygame.mouse
 
-from robingame.gui.button import Button
+from robingame.examples.gui_examples.coloured_button_effects import MyButton
+from robingame.gui import Menu
 from robingame.input import EventQueue
 from robingame.objects import Game, Group
-from robingame.utils import mouse_hovering_over
 
 
 class OnPressEventExample(Game):
@@ -18,11 +18,13 @@ class OnPressEventExample(Game):
     def __init__(self):
         super().__init__()
         self.value = 0
-        self.buttons = Group()
+        self.scenes = Group()
         self.particles = Group()
-        self.child_groups += [self.buttons, self.particles]
-        self.buttons.add(
-            Button(
+        self.child_groups += [self.scenes, self.particles]
+        menu = Menu()
+        self.scenes.add(menu)
+        menu.buttons.add(
+            MyButton(
                 x=200,
                 y=100,
                 width=200,
@@ -37,20 +39,12 @@ class OnPressEventExample(Game):
 
     def update(self):
         super().update()
+        self.listen_events()
 
-        # listen for events
+    def listen_events(self):
         if event := EventQueue.get(type=ChangeValue.type):
             self.value += event.amount
-        print(f"{self.value=}")
-
-        # button manager stuff
-        for button in self.buttons:
-            if mouse_hovering_over(button):
-                button.is_focused = True
-                button.is_pressed = pygame.mouse.get_pressed()[0]
-            else:
-                button.is_focused = False
-                button.is_pressed = False
+            print(f"{self.value=}")
 
 
 @dataclass
