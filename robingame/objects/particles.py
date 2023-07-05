@@ -1,18 +1,17 @@
 import pygame
-from pygame import Rect
 from pygame.color import Color
 
-from robingame.objects.entity import PhysicalEntity
+from robingame.objects.entity import Entity
 from robingame.utils import circle_surf
 
 
-class Particle(PhysicalEntity):
+class Particle(Entity):
     blit_flag = pygame.BLEND_RGB_ADD
-    gravity: float
-    friction: float
-    decay: float
+    gravity: float = 0.0
+    friction: float = 0.0
+    decay: float = 0.0
+    radius: float = 1
     color: Color
-    radius: float
 
     def __init__(
         self,
@@ -34,7 +33,6 @@ class Particle(PhysicalEntity):
         self.decay = self.decay if decay is None else decay
         self.blit_flag = self.blit_flag if blit_flag is None else blit_flag
         self.radius = self.radius if radius is None else radius
-        self.rect = Rect(0, 0, 0, 0)
         self.x = x
         self.y = y
         self.u = u
@@ -53,8 +51,15 @@ class Particle(PhysicalEntity):
     def draw(self, surface, debug=False):
         surf = circle_surf(round(self.radius), self.color)
         image_rect = surf.get_rect()
-        image_rect.center = self.rect.center
+        image_rect.center = self.x, self.y
         surface.blit(surf, image_rect, special_flags=self.blit_flag)
+        if debug:
+            pygame.draw.circle(
+                surface,
+                color=Color("red"),
+                center=(self.x, self.y),
+                radius=2,
+            )
 
     @property
     def death_condition(self):
