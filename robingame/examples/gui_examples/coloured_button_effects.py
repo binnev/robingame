@@ -3,6 +3,7 @@ from pygame import Surface, Rect, Color
 
 from robingame.animation import damping_response
 from robingame.examples.gui_examples.assets import button_flash
+from robingame.gui import Menu
 from robingame.gui.button import Button
 from robingame.image import scale_image, brighten, SpriteAnimation
 from robingame.objects import Game, Group, Particle
@@ -108,10 +109,11 @@ class ColoredButtonEffectsExample(Game):
 
     def __init__(self):
         super().__init__()
-        self.buttons = Group()
+        self.scenes = Group()
         self.particles = Group()
-        self.child_groups += [self.buttons, self.particles]
-        self.buttons.add(
+        self.child_groups += [self.scenes, self.particles]
+        menu = Menu()
+        menu.buttons.add(
             ButtonWithImages(
                 x=200,
                 y=100,
@@ -130,18 +132,7 @@ class ColoredButtonEffectsExample(Game):
             ),
             BouncyButton(x=200, y=300, width=200, height=100),
         )
-
-    def update(self):
-        super().update()
-
-        # button manager stuff
-        for button in self.buttons:
-            if mouse_hovering_over(button):
-                button.is_focused = True
-                button.is_pressed = pygame.mouse.get_pressed()[0]
-            else:
-                button.is_focused = False
-                button.is_pressed = False
+        self.scenes.add(menu)
 
 
 class Flash(Particle):
