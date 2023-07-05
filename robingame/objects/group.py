@@ -1,8 +1,16 @@
 import pygame
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from robingame.objects.entity import Entity
 
 
 class Group(pygame.sprite.Group):
     """Container for multiple Entity objects."""
+
+    def add(self, *entities: "Entity") -> None:
+        """Only overriding this because pygame's typing was making the linter complain."""
+        super().add(*entities)
 
     def update(self, *args):
         super().update(*args)
