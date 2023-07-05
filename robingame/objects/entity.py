@@ -2,7 +2,6 @@ from typing import Callable, Iterable
 
 import pygame
 from pygame import Surface
-from pygame.rect import Rect
 
 from robingame.objects.group import Group
 
@@ -34,9 +33,9 @@ class Entity(pygame.sprite.Sprite):
 
     """
 
-    _state: Callable = lambda *args, **kwargs: None
+    _state: Callable = lambda *args, **kwargs: None  # default state: do nothing
     child_groups: list[Group]  # groups of child Entities belonging to this entity
-    tick: int = 0  # iterations of the main game loop
+    tick: int = 0  # number of game loop iterations elapsed in the current state
 
     def __init__(self, groups: Iterable[Group] = ()) -> None:
         super().__init__(*groups)
@@ -77,57 +76,3 @@ class Entity(pygame.sprite.Sprite):
     def __repr__(self):
         # The `_Sprite__g` is necessary because of name mangling in subclasses I think
         return f"<{self.__class__.__name__} Entity(in {len(self._Sprite__g)} groups)>"
-
-
-class PhysicalEntity(Entity):
-    """
-    attributes:
-    - rect: used for collision detection and positioning
-    - image: used for blitting to screen
-    """
-
-    level: Entity  # parent Entity
-    image: Surface = None
-    rect: Rect
-    frame_duration: int  # higher = slower animation framerate
-
-    def draw(self, surface: Surface, debug: bool = False):
-        if self.image:
-            surface.blit(self.image, self.image_rect)
-        if debug:
-            pygame.draw.rect(surface, self.debug_color, self.rect, 1)
-            pygame.draw.circle(surface, self.debug_color, self.rect.center, 2, 1)
-        super().draw(surface, debug)
-
-    @property
-    def image_rect(self):
-        """Default is to align the image with the center of the object"""
-        if self.image:
-            image_rect = self.image.get_rect()
-            image_rect.center = self.rect.center
-            return image_rect
-        else:
-            return None
-
-    @property
-    def x(self):
-        return self.rect.centerx
-
-    @x.setter
-    def x(self, new_value):
-        new_value = round(new_value)
-        self.rect.centerx = new_value
-
-    @property
-    def y(self):
-        return self.rect.centery
-
-    @y.setter
-    def y(self, new_value):
-        new_value = round(new_value)
-        self.rect.centery = new_value
-
-    @property
-    def animation_frame(self):
-        """Convert game ticks to animation frames."""
-        return self.tick // self.frame_duration

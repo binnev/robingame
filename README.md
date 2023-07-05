@@ -6,5 +6,4 @@ Todo:
 - Input / controller overhaul
   - Do we need the is_pressed / is_released stuff? Can we use keyup / down events instead? 
   - Perhaps the relevant classes can implement the event-based method under the hood, so the interface doesn't change.
-- Entity to have "groups" kwarg in __init__
 
