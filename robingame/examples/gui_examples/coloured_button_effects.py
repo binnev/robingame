@@ -1,4 +1,5 @@
 import pygame.mouse
+from pygame import Surface, Rect, Color
 
 from robingame.animation import damping_response
 from robingame.examples.gui_examples.assets import button_flash
@@ -8,8 +9,27 @@ from robingame.objects import Game, Group, Particle
 from robingame.utils import mouse_hovering_over, random_int
 
 
-class ButtonWithImages(Button):
+class MyButton(Button):
+    image: Surface
+    rect: Rect  # used for collision detection
+    debug_color = Color("red")
+
+    def draw(self, surface: Surface, debug: bool = False):
+        super().draw(surface, debug)
+        image_rect = self.image.get_rect()
+        image_rect.center = self.rect.center
+        surface.blit(self.image, image_rect)
+        if debug:
+            pygame.draw.rect(surface, color=self.debug_color, rect=self.rect, width=1)
+            pygame.draw.rect(surface, color=self.debug_color, rect=(*self.rect.center, 2, 2))
+
+
+class ButtonWithImages(MyButton):
     frame_duration = 3
+
+    @property
+    def animation_frame(self):
+        return self.tick // self.frame_duration
 
     def __init__(self, x: int, y: int, width: int, height: int, **kwargs):
         super().__init__(x, y, width, height, **kwargs)
@@ -38,7 +58,7 @@ class ButtonWithImages(Button):
         self.animation = SpriteAnimation(images=[self.image_idle])
 
 
-class BouncyButton(Button):
+class BouncyButton(MyButton):
     frame_duration = 3
 
     def __init__(self, x: int, y: int, width: int, height: int, **kwargs):
@@ -100,8 +120,10 @@ class ColoredButtonEffectsExample(Game):
                 text="press and hold for smoke",
                 on_release=(
                     lambda button: (
-                        self.particles.add(Flash(x=button.x, y=button.y)),
-                        self.particles.add(Glow(x=button.x, y=button.y) for _ in range(50)),
+                        self.particles.add(Flash(x=button.rect.centerx, y=button.rect.centery)),
+                        self.particles.add(
+                            Glow(x=button.rect.centerx, y=button.rect.centery) for _ in range(50)
+                        ),
                     )
                 ),
                 on_unfocus=(lambda button: self.particles.kill()),

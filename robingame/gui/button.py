@@ -1,14 +1,12 @@
-from typing import Callable
-
 import pygame
 from pygame import Color
 from pygame.rect import Rect
 
-from robingame.objects import PhysicalEntity
+from robingame.objects import Entity
 from robingame.utils import pulsing_value
 
 
-class Button(PhysicalEntity):
+class Button(Entity):
     """
     GUI button entity. Reacts to changes in the is_focused and is_pressed booleans, but doesn't
     set them (a parent menu class or something else should set them). This is so that each Button
@@ -19,7 +17,6 @@ class Button(PhysicalEntity):
 
     is_focused: bool  # does the button have focus? (e.g. mouse hovering over)
     is_pressed: bool  # is the button down right now
-    font_name = "ubuntu"
     font_size = 20
     text_color: Color
 

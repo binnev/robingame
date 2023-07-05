@@ -1,6 +1,6 @@
 import pygame.mouse
 
-from robingame.gui.button import Button
+from robingame.examples.gui_examples.coloured_button_effects import MyButton
 from robingame.objects import Game, Group, Particle
 from robingame.utils import mouse_hovering_over, random_int
 
@@ -20,7 +20,7 @@ class ComplicatedOnPressHookExample(Game):
         self.particles = Group()
         self.child_groups += [self.buttons, self.particles]
         self.buttons.add(
-            Button(
+            MyButton(
                 x=200,
                 y=100,
                 width=400,
@@ -28,8 +28,10 @@ class ComplicatedOnPressHookExample(Game):
                 text="press and hold for smoke",
                 on_press=(
                     lambda button: (
-                        self.particles.add(Flash(x=button.x, y=button.y)),
-                        self.particles.add(Glow(x=button.x, y=button.y) for _ in range(10)),
+                        self.particles.add(Flash(x=button.rect.centerx, y=button.rect.centery)),
+                        self.particles.add(
+                            Glow(x=button.rect.centerx, y=button.rect.centery) for _ in range(10)
+                        ),
                     )
                 ),
                 on_release=(lambda button: self.particles.kill()),
