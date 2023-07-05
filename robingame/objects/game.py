@@ -10,17 +10,18 @@ from robingame.objects.helpers import FpsTracker
 
 
 class Game(Entity):
-    """Special case of Entity; it is at the very top of the object tree."""
+    """
+    Special case of Entity; it is at the very top of the object tree.
+    Handles setting up and running the main game loop.
+    """
 
     fps: int = 60
     window_width: int = 500
     window_height: int = 500
-    window_caption: str = ""
-    font_name: str = "ubuntucondensed"
-    font_size: int = 30
-    parental_name = "game"
+    window_caption: str = "Game"
     screen_color = Color("black")
-    debug = False
+    debug: bool = False  # draw / print debug info?
+    running: bool  # is the main game loop running
 
     def __init__(self):
         super().__init__()
@@ -30,15 +31,15 @@ class Game(Entity):
         self.fps_tracker = FpsTracker()
         self.child_groups = [self.scenes]
 
-        pygame.font.init()
-        self.font = pygame.font.Font(pygame.font.match_font(self.font_name), self.font_size)
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption(self.window_caption)
         self.clock = pygame.time.Clock()
 
     def main(self):
-        """This is the outermost game function which runs once. It contains the outermost game
-        loop. Here's where you should put your main event state machine."""
+        """
+        This is the outermost game function which runs once. It contains the outermost game loop.
+        Here's where you should put your main event state machine.
+        """
         self.running = True
         while self.running:
             self._update()
@@ -46,13 +47,12 @@ class Game(Entity):
         pygame.quit()
         sys.exit()
 
-    def add_scene(self, *objects):
-        self.add_to_group(*objects, group=self.scenes)
-
     def read_inputs(self):
-        """I've put this in a separate method because I don't like the idea of putting the inputs
-        in the same list as other child groups. The order might get ruined, or a subclass might
-        overwrite the list. It's crucial that the inputs are read before updating."""
+        """
+        I've put this in a separate method because I don't like the idea of putting the inputs in
+        the same list as other child groups. The order might get ruined, or a subclass might
+        overwrite the list. It's crucial that the inputs are read before updating.
+        """
         EventQueue.update()
         for event in EventQueue.events:
             if event.type == pygame.QUIT:
