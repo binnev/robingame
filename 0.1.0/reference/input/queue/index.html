@@ -102,6 +102,8 @@
     </li>
     </ul>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../keyboard/">KeyboardInputQueue</a>
+                </li>
     </ul>
                   </li>
               </ul>
@@ -379,7 +381,7 @@ This input history allows us to track which keys have been pressed and released 
         <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_released</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">buffered_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">buffer_length</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">buffered_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">buffer_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Count the rising and falling edges. Can be used to detect past inputs.</span>
 
@@ -445,6 +447,7 @@ This input history allows us to track which keys have been pressed and released 
         <ul class="first simple">
             <li>
               <b>key</b>
+                  (<code>int</code>)
               –
               <div class="doc-md-description">
                 <p>identifier of the input channel</p>
@@ -452,6 +455,7 @@ This input history allows us to track which keys have been pressed and released 
             </li>
             <li>
               <b>buffer_length</b>
+                  (<code>int</code>)
               –
               <div class="doc-md-description">
                 <p>how many past iterations to consider</p>
@@ -501,7 +505,7 @@ This input history allows us to track which keys have been pressed and released 
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">buffered_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">buffer_length</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">buffered_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">buffer_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Count the rising and falling edges. Can be used to detect past inputs.</span>
 
@@ -1020,6 +1024,7 @@ i.e. those that are not down this tick, but were down the previous tick.</p>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../event/" class="btn btn-neutral float-left" title="EventQueue"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../keyboard/" class="btn btn-neutral float-right" title="KeyboardInputQueue">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -1044,6 +1049,8 @@ i.e. those that are not down this tick, but were down the previous tick.</p>
     
       <span><a href="../event/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../keyboard/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

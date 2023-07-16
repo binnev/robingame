@@ -116,6 +116,8 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../input/queue/">InputQueue</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../input/keyboard/">KeyboardInputQueue</a>
+                </li>
     </ul>
                   </li>
               </ul>
@@ -487,6 +489,7 @@ Does not allow values greater than 255.</p>
             </li>
             <li>
               <b>flip_x</b>
+                  (<code>bool</code>)
               –
               <div class="doc-md-description">
                 <p>flip horizontally</p>
@@ -494,6 +497,7 @@ Does not allow values greater than 255.</p>
             </li>
             <li>
               <b>flip_y</b>
+                  (<code>bool</code>)
               –
               <div class="doc-md-description">
                 <p>flip vertically</p>
@@ -542,7 +546,7 @@ Does not allow values greater than 255.</p>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
-<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">flip_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">flip_x</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Surface</span><span class="p">:</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">flip_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">flip_x</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">flip_y</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Surface</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a flipped copy of an image.</span>
 
@@ -582,7 +586,7 @@ Does not allow values greater than 255.</p>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
-<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">flip_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="p">[</span><span class="n">Surface</span><span class="p">],</span> <span class="n">flip_x</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">flip_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="p">[</span><span class="n">Surface</span><span class="p">],</span> <span class="n">flip_x</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">flip_y</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply `flip_image` to a list of images.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -840,6 +844,7 @@ if <code>-1</code> is passed, then the color of the top-left pixel will be used.
             </li>
             <li>
               <b>colorkey</b>
+                  (<code><span title="pygame.color.Color">Color</span></code>)
               –
               <div class="doc-md-description">
                 <p>used to recolor images (see <code>load_image</code>)</p>
@@ -906,7 +911,15 @@ match the pattern)</p>
 <span class="normal">295</span>
 <span class="normal">296</span>
 <span class="normal">297</span>
-<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_image_sequence</span><span class="p">(</span><span class="n">pattern</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">colorkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_images</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Surface</span><span class="p">]:</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_image_sequence</span><span class="p">(</span>
+    <span class="n">pattern</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">colorkey</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">num_images</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Surface</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a sequence of images.</span>
 
@@ -981,6 +994,7 @@ spritesheet into images and return a list of images.</p>
             </li>
             <li>
               <b>colorkey</b>
+                  (<code><span title="pygame.color.Color">Color</span></code>)
               –
               <div class="doc-md-description">
                 <p>used to set transparency (see <code>load_image</code>)</p>
@@ -1069,7 +1083,7 @@ spritesheet into images and return a list of images.</p>
 <span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_spritesheet</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">image_size</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">colorkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colorkey</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">num_images</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Surface</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
