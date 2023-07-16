@@ -43,7 +43,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Robingame docs</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
               <ul class="current">
@@ -113,15 +113,89 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="quick-start">Quick start</h1>
-<pre><code class="language-python">import foo
+<p>A minimal "Hello World" example that illustrates </p>
+<ul>
+<li>Using a <code>Game</code> subclass to declare parameters like screen size, and encapsulate the main game loop </li>
+<li>Leveraging <code>Entity</code>'s built-in Finite State Machine powers to create interactive objects with relatively little code</li>
+</ul>
+<pre><code class="language-python"># quickstart.py
 
-foo()
+import pygame
+from pygame import Surface, Rect, Color
+
+from robingame.input import EventQueue
+from robingame.objects import Game, Group, Entity
+from robingame.text import fonts
+
+
+class Follower(Entity):
+    rect: Rect
+
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.rect = Rect(x, y, 200, 50)
+        self.state = self.state_idle  # set initial state
+
+    def draw(self, surface: Surface, debug: bool = False):
+        super().draw(surface, debug)
+        # draw a filled white rectangle
+        pygame.draw.rect(surface, Color(&quot;white&quot;), self.rect)
+
+        # draw some text
+        fonts.cellphone_black.render(surface, &quot;Drag me!&quot;, *self.rect.topleft, scale=3)
+
+        # if debug is enabled (press F1 to toggle) draw a red outline and also the center of
+        # self.rect
+        if debug:
+            pygame.draw.rect(surface, Color(&quot;red&quot;), self.rect, width=2)
+            pygame.draw.circle(surface, Color(&quot;red&quot;), self.rect.center, radius=2)
+
+    def state_idle(self):
+        &quot;&quot;&quot;
+        Do nothing.
+        If the left mouse button is pressed, switch to state_follow.
+        &quot;&quot;&quot;
+        if EventQueue.get(type=pygame.MOUSEBUTTONDOWN, button=1):
+            self.state = self.state_follow
+
+    def state_follow(self):
+        &quot;&quot;&quot;
+        Follow the mouse around the screen.
+        If the left mouse button is released, switch to state_idle.
+        &quot;&quot;&quot;
+        self.rect.center = pygame.mouse.get_pos()  # follow the mouse
+
+        if EventQueue.get(type=pygame.MOUSEBUTTONUP, button=1):
+            self.state = self.state_idle
+
+
+class HelloWorld(Game):
+    window_caption = &quot;Hello, world!&quot;
+    window_width = 500
+    window_height = 500
+
+    def __init__(self):
+        super().__init__()
+
+        # create a Group to store sub-objects
+        self.children = Group()
+
+        # register the group with `self.child_groups` so that Game.update also calls the
+        # `.update()` method of `self.children`
+        self.child_groups = [self.children]
+
+        # Add an object to the children group
+        self.children.add(Follower(x=10, y=10))
+
+
+if __name__ == &quot;__main__&quot;:
+    HelloWorld().main()
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Robingame docs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../reference/objects/entity/" class="btn btn-neutral float-right" title="Entity">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
