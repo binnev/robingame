@@ -14,7 +14,10 @@ nav:
 #  - tutorials.md
 #  - How-To Guides: how-to-guides.md
   - Reference:
-    - reference/entity.md
-    - reference/group.md
-    - reference/game.md
+      - Objects:
+        - reference/objects/entity.md
+        - reference/objects/group.md
+        - reference/objects/game.md
+      - Text:
+          - reference/text/font.md
 #  - explanation.md

@@ -6,7 +6,7 @@ from robingame.text.font import Font
 
 window = init_display()
 
-assets = Path(__file__).parent.parent / "assets"
+assets = Path(__file__).parent / "assets"
 
 test_font = Font(
     filename=assets / "test_font.png",
