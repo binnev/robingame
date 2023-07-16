@@ -25,4 +25,5 @@ nav:
           - reference/image/utils.md
       - input:
           - reference/input/event.md
+          - reference/input/queue.md
 #  - explanation.md

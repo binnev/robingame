@@ -136,7 +136,7 @@ def arrow_coords(length, width, head_length):
     )
 
 
-def count_edges(values):
+def count_edges(values) -> tuple[int, int]:
     rising_edges = 0
     falling_edges = 0
     for ii, value in enumerate(values):
