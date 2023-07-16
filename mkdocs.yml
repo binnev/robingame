@@ -23,4 +23,6 @@ nav:
       - image:
           - reference/image/sprite_animation.md
           - reference/image/utils.md
+      - input:
+          - reference/input/event.md
 #  - explanation.md

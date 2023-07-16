@@ -2,7 +2,7 @@ from dataclasses import dataclass, is_dataclass, asdict
 from typing import Union
 
 import pygame
-from pygame.event import EventType, Event
+from pygame.event import EventType, Event as PygameEvent
 
 from robingame.image import init_display
 
@@ -10,8 +10,10 @@ init_display()
 
 
 class EventQueue:
-    """Pygame's pygame.event.get() gets the events in the queue, but also empties the queue. This
-    class solves that"""
+    """
+    Pygame's pygame.event.get() empties the queue, which makes it impossible to listen to events
+    in more than one location. This class solves that with a sort of singleton approach.
+    """
 
     # this is intentional. I want to store the events on the class. Only one game will be active
     # at once, so we'll never need more than one instance of this class.
@@ -25,9 +27,14 @@ class EventQueue:
 
         This prevents race conditions / order dependency where an event is added to the event
         queue and processed in the same tick.
+
+        Args:
+            event: object representing the event.
+                Can be a `pygame.Event`, or a dataclass with
+                attribute `type = pygame.event.custom_type()`
         """
         if is_dataclass(event):
-            event = Event(event.type, **asdict(event))
+            event = PygameEvent(event.type, **asdict(event))
         pygame.event.post(event)
 
     @classmethod
@@ -39,7 +46,7 @@ class EventQueue:
         cls.events = pygame.event.get()
 
     @classmethod
-    def filter(cls, **kwargs):
+    def filter(cls, **kwargs) -> list[EventType]:
         return [
             event
             for event in cls.events
@@ -47,7 +54,7 @@ class EventQueue:
         ]
 
     @classmethod
-    def get(cls, **kwargs):
+    def get(cls, **kwargs) -> EventType | None:
         try:
             return cls.filter(**kwargs)[0]
         except IndexError:
