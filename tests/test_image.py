@@ -8,6 +8,8 @@ from robingame.image import (
     load_image,
     relative_folder,
     brighten_color,
+    flip_image,
+    utils,
 )
 
 mocks = relative_folder(__file__, "mocks")
@@ -35,8 +37,8 @@ def test_load_spritesheet_not_found():
 
 def test_load_image_sequence_not_found():
     with pytest.raises(FileNotFoundError) as e:
-        load_image_sequence(filename="foo/bar")
-    assert str(e.value) == "Couldn't find foo/bar"
+        load_image_sequence(pattern="foo/bar*.png")
+    assert str(e.value) == "Couldn't find any images matching pattern 'foo/bar*.png'"
 
 
 @pytest.mark.parametrize(
@@ -48,7 +50,7 @@ def test_load_image_sequence_not_found():
 )
 def test_load_image_sequence(num_images, expected_len):
     filename = mocks / "123_series.png"
-    images = load_image_sequence(filename=filename, num_images=num_images)
+    images = load_image_sequence(pattern=mocks / "123_series*.png", num_images=num_images)
     assert len(images) == expected_len
     assert isinstance(images[0], Surface)
 
@@ -67,8 +69,8 @@ def test_spriteanimation_from_spritesheet():
 
 
 def test_spriteanimation_from_image_sequence():
-    filename = mocks / "123_series.png"
-    anim = SpriteAnimation.from_image_sequence(filename=filename)
+    pattern = mocks / "123_series*.png"
+    anim = SpriteAnimation.from_image_sequence(pattern=pattern)
     assert isinstance(anim, SpriteAnimation)
     assert len(anim.images) == 3
     assert isinstance(anim.images[0], Surface)
@@ -229,3 +231,30 @@ def test_subsurface():
 
     new = image.subsurface(image.get_bounding_rect())
     assert new.get_rect() == (0, 0, 2, 2)
+
+
+def test_scale_image():
+    image = Surface((2, 2))
+    image.fill(Color("white"))
+    image.set_at((0, 0), Color("red"))
+    new_image = utils.scale_image(image, 2)
+    assert new_image.get_size() == (4, 4)
+    assert new_image is not image  # should be a copy
+
+
+def test_flip_image():
+    image = Surface((2, 2))
+    image.fill(Color("white"))
+    image.set_at((0, 0), Color("red"))
+    new_image = utils.flip_image(image, flip_x=True, flip_y=True)
+    assert new_image.get_at((1, 1)) == Color("red")
+    assert new_image is not image  # should be a copy
+
+
+def test_recolor_image():
+    image = Surface((2, 2))
+    image.fill(Color("white"))
+    image.set_at((0, 0), Color("red"))
+    new_image = utils.recolor_image(image, color_mapping={(255, 0, 0): (0, 255, 0)})
+    assert new_image.get_at((0, 0)) == Color("green")
+    assert new_image is not image  # should be a copy

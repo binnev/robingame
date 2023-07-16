@@ -90,7 +90,7 @@ class SpriteAnimation:
     @classmethod
     def from_image_sequence(
         cls,
-        filename: Path | str,
+        pattern: Path | str,
         colorkey=None,
         num_images: int = 0,
         scale: float = None,
@@ -100,8 +100,11 @@ class SpriteAnimation:
     ) -> "SpriteAnimation":
         """
         Load a SpriteAnimation from a sequence of images in a folder.
+
+        Args:
+            pattern: glob pattern used by `load_image_sequence`
         """
-        images = load_image_sequence(filename=filename, colorkey=colorkey, num_images=num_images)
+        images = load_image_sequence(pattern=pattern, colorkey=colorkey, num_images=num_images)
         return cls(images=images, scale=scale, flip_x=flip_x, flip_y=flip_y, colormap=colormap)
 
     ############## playback ###############

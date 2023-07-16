@@ -22,4 +22,5 @@ nav:
           - reference/text/font.md
       - image:
           - reference/image/sprite_animation.md
+          - reference/image/utils.md
 #  - explanation.md
