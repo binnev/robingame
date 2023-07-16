@@ -21,7 +21,7 @@ Bug_Tracker = "https://github.com/binnev/robingame/issues"
 include = ["robingame*"]
 
 [tool.black]
-line-length = 80
+line-length = 100
 
 [tool.pytest.ini_options]
 addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
