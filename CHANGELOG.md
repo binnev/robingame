@@ -1,3 +1,9 @@
+## 1.0.1 (2023-07-16)
+
+### Fix
+
+- **release.py**: need to add a dummy change to bump the version because testpypi also does not allow you to reupload a version :(
+
 ## 1.0.0 (2023-07-16)
 
 ### BREAKING CHANGE
