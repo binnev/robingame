@@ -126,7 +126,7 @@ class InputQueue(deque):
         keys = self.get_released()
         return keys[key]
 
-    def buffered_inputs(self, key, buffer_length) -> tuple[int, int]:
+    def buffered_inputs(self, key: int, buffer_length: int) -> tuple[int, int]:
         """
         Count the rising and falling edges. Can be used to detect past inputs.
 

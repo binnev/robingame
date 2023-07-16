@@ -26,4 +26,5 @@ nav:
       - input:
           - reference/input/event.md
           - reference/input/queue.md
+          - reference/input/keyboard.md
 #  - explanation.md

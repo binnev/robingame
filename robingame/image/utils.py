@@ -167,7 +167,7 @@ def scale_images(images: [Surface], scale: float) -> [Surface]:
     return [scale_image(image, scale) for image in images]
 
 
-def flip_image(image: Surface, flip_x=False, flip_y=False) -> Surface:
+def flip_image(image: Surface, flip_x: bool = False, flip_y: bool = False) -> Surface:
     """
     Return a flipped copy of an image.
 
@@ -182,7 +182,7 @@ def flip_image(image: Surface, flip_x=False, flip_y=False) -> Surface:
     return pygame.transform.flip(image, bool(flip_x), bool(flip_y))
 
 
-def flip_images(images: [Surface], flip_x=False, flip_y=False):
+def flip_images(images: [Surface], flip_x: bool = False, flip_y: bool = False):
     """
     Apply `flip_image` to a list of images.
     """
@@ -233,7 +233,7 @@ def recolor_images(images: [Surface], colormap: dict) -> [Surface]:
 def load_spritesheet(
     filename: Path | str,
     image_size: (int, int) = None,
-    colorkey=None,
+    colorkey: Color = None,
     num_images: int = 0,
 ) -> [Surface]:
     """
@@ -274,7 +274,11 @@ def load_spritesheet(
     return images
 
 
-def load_image_sequence(pattern: Path | str, colorkey=None, num_images: int = 0) -> [Surface]:
+def load_image_sequence(
+    pattern: Path | str,
+    colorkey: Color = None,
+    num_images: int = 0,
+) -> [Surface]:
     """
     Load a sequence of images.
 
