@@ -1,13 +1,3 @@
-# Quick start
-
-A minimal "Hello World" example that illustrates 
-
-- Using a `Game` subclass to declare parameters like screen size, and encapsulate the main game loop 
-- Leveraging `Entity`'s built-in Finite State Machine powers to create interactive objects with relatively little code
-
-```python
-# quickstart.py
-
 import pygame
 from pygame import Surface, Rect, Color
 
@@ -78,4 +68,3 @@ class HelloWorld(Game):
 
 if __name__ == "__main__":
     HelloWorld().main()
-```

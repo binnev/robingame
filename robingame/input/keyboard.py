@@ -14,6 +14,7 @@ class KeyboardInputQueue(InputQueue):
             pygame.quit()
         ```
     """
+
     def get_new_values(self) -> tuple[int]:
         scancode_wrapper = pygame.key.get_pressed()
         return tuple(scancode_wrapper[ii] for ii in range(len(scancode_wrapper)))
