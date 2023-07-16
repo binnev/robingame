@@ -9,6 +9,12 @@ pytest
 coverage
 pytest-cov
 packaging >=3.0
+commitizen
+
+# documentation
+mkdocs
+mkdocstrings[python]
+mike
 
 # packaging
 wheel>=0.37, <0.38
