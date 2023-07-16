@@ -12,6 +12,10 @@ classifiers = [
 ]
 keywords = ["pygame", "OOP"]
 requires-python = ">=3.9"
+dependencies = [
+    "numpy >=1.0.0",
+    "pygame >=2.5.0",
+]
 
 [project.urls]
 Homepage = " https://github.com/binnev/robingame"
