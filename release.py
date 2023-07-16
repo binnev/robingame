@@ -51,7 +51,6 @@ UNDERLINE = "\033[4m"
 
 if __name__ == "__main__":
     cleanup()
-
     announce("Running tests")
     shell("pytest")
 
