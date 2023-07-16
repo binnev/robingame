@@ -58,8 +58,6 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#robingame.objects.entity.Entity.state">state</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#robingame.objects.entity.Entity.__repr__">__repr__()</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#robingame.objects.entity.Entity.draw">draw()</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#robingame.objects.entity.Entity.kill">kill()</a>
@@ -67,6 +65,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#robingame.objects.entity.Entity.update">update()</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../group/">Group</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../game/">Game</a>
                   </li>
               </ul>
       </div>
@@ -109,12 +111,12 @@
 <ul>
 <li><code>self.state</code> is executed every tick</li>
 <li><code>self.tick</code> is incremented every time the main game loop executes</li>
-<li>when self.state changes, self.tick is set to 0, so you can track how long the entity has
+<li>when <code>self.state</code> changes, <code>self.tick</code> is set to 0, so you can track how long the entity has
   been in its current state</li>
 </ul>
 <p>Hierarchical structure:</p>
 <ul>
-<li>Entities can be added to Groups to create a hierarchical structure</li>
+<li><code>Entities</code> can be added to <code>Groups</code> to create a hierarchical structure</li>
 <li>The order of groups in the .child_groups attribute determines the draw order; it's basically
   the layers</li>
 </ul>
@@ -217,18 +219,24 @@
 <span class="normal">90</span>
 <span class="normal">91</span>
 <span class="normal">92</span>
-<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span>
+<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finite State Machine:</span>
 
 <span class="sd">    - `self.state` is executed every tick</span>
 <span class="sd">    - `self.tick` is incremented every time the main game loop executes</span>
-<span class="sd">    - when self.state changes, self.tick is set to 0, so you can track how long the entity has</span>
+<span class="sd">    - when `self.state` changes, `self.tick` is set to 0, so you can track how long the entity has</span>
 <span class="sd">      been in its current state</span>
 
 <span class="sd">    Hierarchical structure:</span>
 
-<span class="sd">    - Entities can be added to Groups to create a hierarchical structure</span>
+<span class="sd">    - `Entities` can be added to `Groups` to create a hierarchical structure</span>
 <span class="sd">    - The order of groups in the .child_groups attribute determines the draw order; it&#39;s basically</span>
 <span class="sd">      the layers</span>
 
@@ -257,10 +265,16 @@
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update all child groups. This allows the entire tree of objects to update by only calling</span>
-<span class="sd">        the .update() method of the root object.</span>
+<span class="sd">        Execute `self.state`.</span>
 
-<span class="sd">        Subclasses can override this method to provide subclass-specific behaviour.</span>
+<span class="sd">        Call `.update()` on all child groups. This allows the entire tree of objects to update by</span>
+<span class="sd">        only calling the `.update()` method of the root object.</span>
+
+<span class="sd">        Subclasses can override this method to provide subclass-specific behaviour. However,</span>
+<span class="sd">        it&#39;s generally a better idea to write state functions and allow the Entity&#39;s Finite State</span>
+<span class="sd">        Machine mechanism to execute them.</span>
+
+<span class="sd">        Increment `self.tick` to keep track of how long we&#39;ve been in the current state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>  <span class="c1"># execute current state function</span>
         <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_groups</span><span class="p">:</span>
@@ -281,7 +295,7 @@
             <span class="n">group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">debug</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes self from all groups it is a member of.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes self from all groups.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_groups</span><span class="p">:</span>
             <span class="n">group</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
@@ -300,7 +314,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tick</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `_Sprite__g` is necessary because of name mangling in subclasses I think&quot;&quot;&quot;</span>
+        <span class="c1"># The `_Sprite__g` is necessary because of name mangling in subclasses I think</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> Entity(in </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Sprite__g</span><span class="p">)</span><span class="si">}</span><span class="s2"> groups)&gt;&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -338,34 +352,6 @@
 </div>
 
 
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="robingame.objects.entity.Entity.__repr__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The <code>_Sprite__g</code> is necessary because of name mangling in subclasses I think</p>
-
-          <details class="quote">
-            <summary> <code>robingame/objects/entity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `_Sprite__g` is necessary because of name mangling in subclasses I think&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> Entity(in </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Sprite__g</span><span class="p">)</span><span class="si">}</span><span class="s2"> groups)&gt;&quot;</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
 
 
 <div class="doc doc-object doc-function">
@@ -418,18 +404,18 @@
 </table>
           <details class="quote">
             <summary> <code>robingame/objects/entity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">:</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">:</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw all child groups. This allows the entire tree of objects to draw by only calling the</span>
 <span class="sd">    .draw() method of the root object.</span>
@@ -460,16 +446,16 @@
 
   <div class="doc doc-contents ">
   
-      <p>Removes self from all groups it is a member of.</p>
+      <p>Removes self from all groups.</p>
 
           <details class="quote">
             <summary> <code>robingame/objects/entity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes self from all groups it is a member of.&quot;&quot;&quot;</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes self from all groups.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_groups</span><span class="p">:</span>
         <span class="n">group</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
@@ -492,9 +478,13 @@
 
   <div class="doc doc-contents ">
   
-      <p>Update all child groups. This allows the entire tree of objects to update by only calling
-the .update() method of the root object.</p>
-<p>Subclasses can override this method to provide subclass-specific behaviour.</p>
+      <p>Execute <code>self.state</code>.</p>
+<p>Call <code>.update()</code> on all child groups. This allows the entire tree of objects to update by
+only calling the <code>.update()</code> method of the root object.</p>
+<p>Subclasses can override this method to provide subclass-specific behaviour. However,
+it's generally a better idea to write state functions and allow the Entity's Finite State
+Machine mechanism to execute them.</p>
+<p>Increment <code>self.tick</code> to keep track of how long we've been in the current state.</p>
 
           <details class="quote">
             <summary> <code>robingame/objects/entity.py</code></summary>
@@ -508,12 +498,24 @@ the .update() method of the root object.</p>
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Update all child groups. This allows the entire tree of objects to update by only calling</span>
-<span class="sd">    the .update() method of the root object.</span>
+<span class="sd">    Execute `self.state`.</span>
 
-<span class="sd">    Subclasses can override this method to provide subclass-specific behaviour.</span>
+<span class="sd">    Call `.update()` on all child groups. This allows the entire tree of objects to update by</span>
+<span class="sd">    only calling the `.update()` method of the root object.</span>
+
+<span class="sd">    Subclasses can override this method to provide subclass-specific behaviour. However,</span>
+<span class="sd">    it&#39;s generally a better idea to write state functions and allow the Entity&#39;s Finite State</span>
+<span class="sd">    Machine mechanism to execute them.</span>
+
+<span class="sd">    Increment `self.tick` to keep track of how long we&#39;ve been in the current state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>  <span class="c1"># execute current state function</span>
     <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_groups</span><span class="p">:</span>
@@ -537,6 +539,7 @@ the .update() method of the root object.</p>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../../quickstart/" class="btn btn-neutral float-left" title="Quick start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../group/" class="btn btn-neutral float-right" title="Group">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -561,6 +564,8 @@ the .update() method of the root object.</p>
     
       <span><a href="../../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../group/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
