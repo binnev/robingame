@@ -1,0 +1,20 @@
+site_name: robingame docs
+
+theme:
+  name: "readthedocs"
+
+plugins:
+  - search
+  - mkdocstrings
+  - mike
+
+nav:
+  - index.md
+  - Quick start: quickstart.md
+#  - tutorials.md
+#  - How-To Guides: how-to-guides.md
+  - Reference:
+    - reference/entity.md
+    - reference/group.md
+    - reference/game.md
+#  - explanation.md

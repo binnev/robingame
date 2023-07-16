@@ -6,20 +6,28 @@ if TYPE_CHECKING:
 
 
 class Group(pygame.sprite.Group):
-    """Container for multiple Entity objects."""
+    """Container for multiple Entities."""
 
     def add(self, *entities: "Entity") -> None:
-        """Only overriding this because pygame's typing was making the linter complain."""
+        """
+        Does the same thing as pygame's `Group.add()`.
+        Only overriding this because pygame's typing was making the linter complain.
+        """
         super().add(*entities)
 
     def update(self, *args):
+        """
+        Call `.update()` on all member Entities.
+        """
         super().update(*args)
 
     def draw(self, surface: pygame.Surface, debug: bool = False):
         """
-        Draws all of the member sprites onto the given surface.
-        Different from pygame's Group.draw in that it calls the Entity.draw() method instead of
-        just blitting the Entity.image to the screen.
+        Call `.draw(surface, debug)` on all member Entities.
+
+        This is different from pygame's `Group.draw()` in that it calls the `Entity.draw()` method
+        (thus allowing the Entity to decide how to draw itself) instead of just blitting the
+        Entity's `.image` onto the surface.
         """
         entities = self.sprites()
         for entity in entities:
@@ -28,8 +36,8 @@ class Group(pygame.sprite.Group):
 
     def kill(self):
         """
-        Kill all the sprites in this group. This is different from .empty().
-        Does not kill the sprites in other groups.
+        Call `.kill()` on all the entities in this group.
+        This is different from `Group.empty()`.
         """
-        for sprite in self:
-            sprite.kill()
+        for entity in self:
+            entity.kill()

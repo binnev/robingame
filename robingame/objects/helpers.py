@@ -9,7 +9,9 @@ from robingame.text.font import fonts
 
 
 class FpsTracker(Entity):
-    """Displays a little number in the top right of the window if debug=True"""
+    """
+    Displays a little number in the top right of the window if debug=True
+    """
 
     buffer_length = 60
     font = fonts.cellphone_black
