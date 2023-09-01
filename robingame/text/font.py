@@ -3,13 +3,14 @@ from pathlib import Path
 from pygame.color import Color
 from pygame.surface import Surface
 
-from robingame.image import load_spritesheet, scale_image, empty_image
+from robingame.image import load_spritesheet, scale_image, empty_image, load_image_sequence
 from robingame.text.exceptions import TextError
 
 
 class Font:
     """
-    Handles loading custom fonts from a spritesheet, and rendering text onto a surface.
+    Handles loading custom fonts from a spritesheet or image sequence, and rendering text onto a
+    surface.
     """
 
     letters: dict[str:Surface]
@@ -19,6 +20,47 @@ class Font:
 
     def __init__(
         self,
+        images: list[Surface],
+        letters: str,
+        xpad: int = 0,
+        ypad: int = 0,
+        trim: bool = False,
+        space_width: int = None,
+    ):
+        """
+        Create a Font from a list of images.
+        Usually you'll want to use `from_spritesheet` or `from_image_sequence` instead.
+
+        Args:
+            images: a list of images representing characters
+            letters: a string of characters in the same order as the images
+            xpad: extra x space between characters (in pixels). Can be negative.
+            ypad: extra y space between characters (in pixels). Can be negative.
+            trim: if `True`, trim any empty x space from the characters so that the width of
+                each character depends on the letter ("l" will be narrower than "m"). If `False`,
+                leave the characters equal width (results in a monospaced font)
+            space_width: desired width of the space character (in pixels). If omitted, the space
+                will be made as wide as a character
+        """
+        try:
+            self.image_size = width, height = images[0].get_size()
+        except IndexError:
+            raise TextError(f"{self.__class__.__name__}.__init__ received no images!")
+
+        self.xpad = xpad
+        self.ypad = ypad
+        self.letters = dict()
+        self.not_found = Surface(self.image_size)
+        self.not_found.fill(Color("red"))
+        if trim:
+            images = self._trim_images(images)
+        self.letters.update({letter: image for letter, image in zip(letters, images)})
+        if space_width:
+            self.letters[" "] = empty_image((space_width or width, height))
+
+    @classmethod
+    def from_spritesheet(
+        cls,
         filename: str | Path,
         image_size: tuple[int, int],
         letters: str,
@@ -27,27 +69,24 @@ class Font:
         trim: bool = False,
         space_width: int = None,
         **kwargs: dict,
-    ):
+    ) -> "Font":
         """
-        Loads the font from a spritesheet of letters using `load_spritesheet`.
+        Loads the font from a spritesheet using `load_spritesheet`.
 
         Args:
             filename: path to the spritesheet of letters
             image_size: the xy size of a character image in the spritesheet (we assume the
                 characters are evenly spaced in the spritesheet)
-            letters: describes the order in which the characters appear in the spritesheet
-            xpad: extra x space between characters (in pixels). Can be negative
-            ypad: extra y space between characters (in pixels). Can be negative
-            trim: if `True`, trim any empty x space from the characters so that the width of
-                each character depends on the letter ("l" will be narrower than "m"). If `False`,
-                leave the characters equal width (results in a monospaced font)
-            space_width: desired width of the space character (in pixels). If omitted, the space
-                will be made as wide as a character
-            kwargs: any extra kwargs will be passed on to `load_spritesheet`
+            letters: see `__init__`
+            xpad: see `__init__`
+            ypad: see `__init__`
+            trim: see `__init__`
+            space_width: see `__init__`
+            kwargs: passed to `load_spritesheet`
 
         Example:
             ```
-            test_font = Font(
+            test_font = Font.from_spritesheet(
                 filename="test_font.png",
                 image_size=(16, 16),
                 letters=(
@@ -60,19 +99,64 @@ class Font:
                 space_width=8,
             )
             ```
+
         """
-        self.image_size = width, height = image_size
-        self.xpad = xpad
-        self.ypad = ypad
-        self.letters = dict()
-        self.not_found = Surface(image_size)
-        self.not_found.fill(Color("red"))
-        images = load_spritesheet(filename, image_size=image_size, **kwargs)
-        if trim:
-            images = self._trim_images(images)
-        self.letters.update({letter: image for letter, image in zip(letters, images)})
-        if space_width:
-            self.letters[" "] = empty_image((space_width or width, height))
+        return cls(
+            images=load_spritesheet(filename, image_size=image_size, **kwargs),
+            letters=letters,
+            xpad=xpad,
+            ypad=ypad,
+            trim=trim,
+            space_width=space_width,
+        )
+
+    @classmethod
+    def from_image_sequence(
+        cls,
+        pattern: str | Path,
+        letters: str,
+        xpad: int = 0,
+        ypad: int = 0,
+        trim: bool = False,
+        space_width: int = None,
+        **kwargs: dict,
+    ) -> "Font":
+        """
+        Loads the font from a sequence of images using `load_image_sequence`.
+
+        Args:
+            pattern: file pattern used to glob the images
+            letters: see `__init__`
+            xpad: see `__init__`
+            ypad: see `__init__`
+            trim: see `__init__`
+            space_width: see `__init__`
+            kwargs: passed to `load_image_sequence`
+
+        Example:
+            ```
+            test_font = Font.from_image_sequence(
+                pattern="font*.png",  # matches font1.png, font2.png, etc.
+                letters=(
+                    string.ascii_uppercase
+                    + string.ascii_lowercase
+                    + r"1234567890-=!@#$%^&*()_+[];',./{}|:<>?~`"
+                ),
+                trim=True,
+                xpad=1,
+                space_width=8,
+            )
+            ```
+
+        """
+        return cls(
+            images=load_image_sequence(pattern=pattern, **kwargs),
+            letters=letters,
+            xpad=xpad,
+            ypad=ypad,
+            trim=trim,
+            space_width=space_width,
+        )
 
     def render(
         self,

@@ -8,7 +8,7 @@ window = init_display()
 
 assets = Path(__file__).parent / "assets"
 
-test_font = Font(
+test_font = Font.from_spritesheet(
     filename=assets / "test_font.png",
     image_size=(16, 16),
     letters=(
@@ -21,7 +21,7 @@ test_font = Font(
     space_width=8,
 )
 
-cellphone_black = Font(
+cellphone_black = Font.from_spritesheet(
     filename=assets / "cellphone-black.png",
     image_size=(7, 9),
     letters=(
@@ -36,7 +36,7 @@ cellphone_black = Font(
     trim=True,
     space_width=4,
 )
-cellphone_white = Font(
+cellphone_white = Font.from_spritesheet(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
@@ -51,7 +51,7 @@ cellphone_white = Font(
     trim=True,
     space_width=4,
 )
-cellphone_white_mono = Font(
+cellphone_white_mono = Font.from_spritesheet(
     filename=assets / "cellphone-white.png",
     image_size=(7, 9),
     letters=(
@@ -63,7 +63,7 @@ cellphone_white_mono = Font(
     ),
     colorkey=-1,
 )
-chunky_retro = Font(
+chunky_retro = Font.from_spritesheet(
     filename=assets / "chunky_retro.png",
     image_size=(20, 20),
     letters=(
@@ -80,14 +80,14 @@ chunky_retro = Font(
     trim=True,
     xpad=-1,
 )
-sharp_retro = Font(
+sharp_retro = Font.from_spritesheet(
     filename=assets / "sharp_retro.png",
     image_size=(8, 16),
     letters=(
         r"""!"#$%'()*+,-./"""
         + "0123456789:;<=>?@"
         + string.ascii_uppercase
-        + "[\]^_`"
+        + "[\\]^_`"
         + string.ascii_lowercase
         + "{|}~"
     ),
@@ -96,7 +96,7 @@ sharp_retro = Font(
     space_width=6,
 )
 
-tiny_white = Font(
+tiny_white = Font.from_spritesheet(
     filename=assets / "tiny.png",
     image_size=(8, 12),
     letters=(
