@@ -1,6 +1,6 @@
 [project]
 name = "robingame"
-version = "1.0.1"
+version = "2.0.0"
 description = "Object-oriented tools for Pygame projects"
 readme = "README.md"
 authors = [{ name = "Robin Neville", email = "robin.m.neville@gmail.com" }]

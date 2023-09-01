@@ -1,3 +1,20 @@
+## 2.0.0 (2023-09-01)
+
+### BREAKING CHANGE
+
+- Font.__init__ now expects a list of images instead of a filename.
+
+### Feat
+
+- **font**: Font.__init__ -> from_spritesheet and from_image_sequence
+- **text**: Added new font "tiny"
+- **text**: changed how Font.__init__ initialises space
+- **text**: Added a couple more fonts
+
+### Fix
+
+- **text**: Added a better test text to font_sandbox.py.
+
 ## 1.0.1 (2023-07-16)
 
 ### Fix
