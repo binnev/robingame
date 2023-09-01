@@ -14,14 +14,33 @@ Accents ÀÈÌÒÙ àèìòù ÁÉÍÓÚÝ áéíóúý ÂÊÎÔÛ âêîôû Ã
 Mötörhêàd
 
 code snippet with indentation
-for ii in range(3): 
-    for jj in range(9): 
-        print(math.sqrt(ii**2 + jj**2))
+for ii in range(3^2):  #comment
+    for jj in range(9 || 4): 
+        print(math.sqrt(ii**2 + jj**2 + 2~3))
+        console.log(`hello ${firstname}`);
+        
+some@email.com -> list[2] = ["foo", 420.69]
+if {'one': 1} > 4 && 4%2:
+    list.append(4)
+
+a+b=2
+a-b=9
+a+-b=9
+a+-=b
+The man in black fled across the desert, and the gunslinger followed.
+
+The desert was the apotheosis of all deserts: huge, standing to the sky for what looked like 
+eternity in all directions. It was white and blinding and waterless and without feature save for 
+the faint, cloudy haze of the mountains which sketched themselves on the horizon and the 
+devil-grass which brought sweet dreams, nightmares, death. An occasional tombstone sign pointed 
+the way; for once the drifted track that cut its way through the thick crust of alkali had been a 
+highway. Coaches and buckas had followed it. The world had moved on since then? The world had 
+emptied!
 """
 
 
 class FontTest(Game):
-    font = fonts.cellphone_white  # the font to test
+    font = fonts.tiny_white  # the font to test
     window_width = 1500
     window_height = 1000
     screen_color = (150, 150, 150)

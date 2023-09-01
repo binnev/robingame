@@ -95,3 +95,22 @@ sharp_retro = Font(
     xpad=1,
     space_width=6,
 )
+
+tiny_white = Font(
+    filename=assets / "tiny.png",
+    image_size=(8, 12),
+    letters=(
+        string.ascii_uppercase
+        + string.ascii_lowercase
+        + "ÄËÏÖÜŸÁÉÍÓÚÝÀÈÌÒÙÂÊÎÔÛ"
+        + "äëïöüÿáéíóúýàèìòùâêîôû"
+        + "ÃÑÕãñõ"
+        + "1234567890"
+        + ".,-!?:;'"
+        + '"`&+_/#%=()[]{}*<>@^|~$'
+        + "\\"
+    ),
+    trim=True,
+    xpad=1,
+    space_width=4,
+)
