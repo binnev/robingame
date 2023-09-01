@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Quick start - robingame docs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/version-select.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quick start";
+        var mkdocs_page_input_path = "quickstart.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> robingame docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Quick start</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="#">objects</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/objects/entity/">Entity</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/objects/group/">Group</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/objects/game/">Game</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">text</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/text/font/">Font</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">image</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/image/sprite_animation/">SpriteAnimation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/image/utils/">Utils</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">input</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/input/event/">EventQueue</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/input/queue/">InputQueue</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/input/keyboard/">KeyboardInputQueue</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">robingame docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>Quick start</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quick-start">Quick start</h1>
+<p>A minimal "Hello World" example that illustrates </p>
+<ul>
+<li>Using a <code>Game</code> subclass to declare parameters like screen size, and encapsulate the main game loop </li>
+<li>Leveraging <code>Entity</code>'s built-in Finite State Machine powers to create interactive objects with relatively little code</li>
+</ul>
+<pre><code class="language-python"># quickstart.py
+
+import pygame
+from pygame import Surface, Rect, Color
+
+from robingame.input import EventQueue
+from robingame.objects import Game, Group, Entity
+from robingame.text import fonts
+
+
+class Follower(Entity):
+    rect: Rect
+
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.rect = Rect(x, y, 200, 50)
+        self.state = self.state_idle  # set initial state
+
+    def draw(self, surface: Surface, debug: bool = False):
+        super().draw(surface, debug)
+        # draw a filled white rectangle
+        pygame.draw.rect(surface, Color(&quot;white&quot;), self.rect)
+
+        # draw some text
+        fonts.cellphone_black.render(surface, &quot;Drag me!&quot;, *self.rect.topleft, scale=3)
+
+        # if debug is enabled (press F1 to toggle) draw a red outline and also the center of
+        # self.rect
+        if debug:
+            pygame.draw.rect(surface, Color(&quot;red&quot;), self.rect, width=2)
+            pygame.draw.circle(surface, Color(&quot;red&quot;), self.rect.center, radius=2)
+
+    def state_idle(self):
+        &quot;&quot;&quot;
+        Do nothing.
+        If the left mouse button is pressed, switch to state_follow.
+        &quot;&quot;&quot;
+        if EventQueue.get(type=pygame.MOUSEBUTTONDOWN, button=1):
+            self.state = self.state_follow
+
+    def state_follow(self):
+        &quot;&quot;&quot;
+        Follow the mouse around the screen.
+        If the left mouse button is released, switch to state_idle.
+        &quot;&quot;&quot;
+        self.rect.center = pygame.mouse.get_pos()  # follow the mouse
+
+        if EventQueue.get(type=pygame.MOUSEBUTTONUP, button=1):
+            self.state = self.state_idle
+
+
+class HelloWorld(Game):
+    window_caption = &quot;Hello, world!&quot;
+    window_width = 500
+    window_height = 500
+
+    def __init__(self):
+        super().__init__()
+
+        # create a Group to store sub-objects
+        self.children = Group()
+
+        # register the group with `self.child_groups` so that Game.update also calls the
+        # `.update()` method of `self.children`
+        self.child_groups = [self.children]
+
+        # Add an object to the children group
+        self.children.add(Follower(x=10, y=10))
+
+
+if __name__ == &quot;__main__&quot;:
+    HelloWorld().main()
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reference/objects/entity/" class="btn btn-neutral float-right" title="Entity">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reference/objects/entity/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+      <script src="../js/version-select.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
