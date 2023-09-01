@@ -65,13 +65,14 @@ class Font:
         self.xpad = xpad
         self.ypad = ypad
         self.letters = dict()
-        self.letters[" "] = empty_image((space_width or width, height))
         self.not_found = Surface(image_size)
         self.not_found.fill(Color("red"))
         images = load_spritesheet(filename, image_size=image_size, **kwargs)
         if trim:
             images = self._trim_images(images)
         self.letters.update({letter: image for letter, image in zip(letters, images)})
+        if space_width:
+            self.letters[" "] = empty_image((space_width or width, height))
 
     def render(
         self,
