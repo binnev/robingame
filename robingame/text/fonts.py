@@ -63,3 +63,35 @@ cellphone_white_mono = Font(
     ),
     colorkey=-1,
 )
+chunky_retro = Font(
+    filename=assets / "chunky_retro.png",
+    image_size=(20, 20),
+    letters=(
+        r"""!"#$%&'()*+,-."""
+        r"/0123456789:;<="
+        r">?@ABCDEFGHIJKL"
+        r"MNOPQRSTUVWXYZ["
+        r"\]^_abcdefghij"
+        r"klmnopqrstuvwxy"
+        r"z{|}~çÜÉÂÄÀ ÇÊ"
+        r"ËÈÏÎÌÄ ÉÆæÔÖÒÛÙ"
+    ),
+    space_width=12,
+    trim=True,
+    xpad=-1,
+)
+sharp_retro = Font(
+    filename=assets / "sharp_retro.png",
+    image_size=(8, 16),
+    letters=(
+        r"""!"#$%'()*+,-./"""
+        + "0123456789:;<=>?@"
+        + string.ascii_uppercase
+        + "[\]^_`"
+        + string.ascii_lowercase
+        + "{|}~"
+    ),
+    trim=True,
+    xpad=1,
+    space_width=6,
+)
