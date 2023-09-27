@@ -2,8 +2,7 @@ from pathlib import Path
 
 from pygame import Surface, Color
 from typing import Sequence
-
-from robingame.image import utils
+from robingame.image import manipulation, loading
 
 
 class FrameAnimation(list):
@@ -68,7 +67,7 @@ class FrameAnimation(list):
         Returns:
             a new instance
         """
-        images = utils.load_spritesheet(
+        images = loading.load_spritesheet(
             filename=filename, image_size=image_size, colorkey=colorkey, num_images=num_images
         )
         return cls(images=images, scale=scale, flip_x=flip_x, flip_y=flip_y, colormap=colormap)
@@ -99,7 +98,7 @@ class FrameAnimation(list):
         Returns:
             a new instance
         """
-        images = utils.load_image_sequence(
+        images = loading.load_image_sequence(
             pattern=pattern, colorkey=colorkey, num_images=num_images
         )
         return cls(images=images, scale=scale, flip_x=flip_x, flip_y=flip_y, colormap=colormap)
@@ -160,7 +159,7 @@ class FrameAnimation(list):
             y: flip vertically
         """
         for index, image in enumerate(self):
-            self[index] = utils.flip_image(image, flip_x=x, flip_y=y)
+            self[index] = manipulation.flip_image(image, flip_x=x, flip_y=y)
 
     def recolor(self, colormap: dict) -> "FrameAnimation":
         """
@@ -182,7 +181,7 @@ class FrameAnimation(list):
             colormap: mapping of old colours to new colours
         """
         for index, image in enumerate(self):
-            self[index] = utils.recolor_image(image, colormap)
+            self[index] = manipulation.recolor_image(image, colormap)
 
     def scale(self, scale: float) -> "FrameAnimation":
         """
@@ -204,4 +203,4 @@ class FrameAnimation(list):
             scale: factor by which to scale images
         """
         for index, image in enumerate(self):
-            self[index] = utils.scale_image(image, scale)
+            self[index] = manipulation.scale_image(image, scale)

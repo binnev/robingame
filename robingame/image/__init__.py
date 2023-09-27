@@ -1,2 +1,3 @@
 from .frame_animation import FrameAnimation
-from .utils import *
+from .loading import *
+from .manipulation import *
