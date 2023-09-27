@@ -2,7 +2,7 @@ import pytest
 from pygame import Surface, Color
 
 from robingame.image import (
-    SpriteAnimation,
+    FrameAnimation,
     load_spritesheet,
     load_image_sequence,
     load_image,
@@ -57,29 +57,29 @@ def test_load_image_sequence(num_images, expected_len):
 
 def test_can_instantiate_empty_spriteanimation():
     """images=None by default and it shouldn't try to flip/recolor/scale"""
-    SpriteAnimation()
+    FrameAnimation()
 
 
 def test_spriteanimation_from_spritesheet():
     filename = mocks / "123_spritesheet.png"
-    anim = SpriteAnimation.from_spritesheet(filename=filename, image_size=(64, 64))
-    assert isinstance(anim, SpriteAnimation)
+    anim = FrameAnimation.from_spritesheet(filename=filename, image_size=(64, 64))
+    assert isinstance(anim, FrameAnimation)
     assert len(anim.images) == 3
     assert isinstance(anim.images[0], Surface)
 
 
 def test_spriteanimation_from_image_sequence():
     pattern = mocks / "123_series*.png"
-    anim = SpriteAnimation.from_image_sequence(pattern=pattern)
-    assert isinstance(anim, SpriteAnimation)
+    anim = FrameAnimation.from_image_sequence(pattern=pattern)
+    assert isinstance(anim, FrameAnimation)
     assert len(anim.images) == 3
     assert isinstance(anim.images[0], Surface)
 
 
 def test_spriteanimation_from_image():
     filename = mocks / "123_spritesheet.png"
-    anim = SpriteAnimation.from_image(filename=filename)
-    assert isinstance(anim, SpriteAnimation)
+    anim = FrameAnimation.from_image(filename=filename)
+    assert isinstance(anim, FrameAnimation)
     assert len(anim.images) == 1
     assert isinstance(anim.images[0], Surface)
 
@@ -89,7 +89,7 @@ def test_spriteanimation_copy_methods():
     pxl.fill(Color("red"))
     pxl.set_at((0, 0), Color("black"))
 
-    anim = SpriteAnimation(images=[pxl])
+    anim = FrameAnimation(images=[pxl])
     assert anim.images[0].get_at((0, 0)) == Color("black")
     assert anim.images[0].get_at((0, 1)) == Color("red")
     assert anim.images[0].get_at((1, 0)) == Color("red")
@@ -120,7 +120,7 @@ def test_spriteanimation_copy_methods():
     assert scaled.images[0].get_rect().height == 6
 
     # original should be unchanged
-    anim = SpriteAnimation(images=[pxl])
+    anim = FrameAnimation(images=[pxl])
     assert anim.images[0].get_at((0, 0)) == Color("black")
     assert anim.images[0].get_at((0, 1)) == Color("red")
     assert anim.images[0].get_at((1, 0)) == Color("red")

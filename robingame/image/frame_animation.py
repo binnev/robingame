@@ -11,7 +11,7 @@ from robingame.image.utils import (
 )
 
 
-class SpriteAnimation:
+class FrameAnimation:
     """
     Animates a sequence of images.
     Can scale, flip, and recolor itself.
@@ -52,7 +52,7 @@ class SpriteAnimation:
         flip_x: bool = False,
         flip_y: bool = False,
         colormap: dict = None,
-    ) -> "SpriteAnimation":
+    ) -> "FrameAnimation":
         """
         Load the SpriteAnimation from a single image.
         Alias for `from_spritesheet`.
@@ -78,7 +78,7 @@ class SpriteAnimation:
         flip_x: bool = False,
         flip_y: bool = False,
         colormap: dict = None,
-    ) -> "SpriteAnimation":
+    ) -> "FrameAnimation":
         """
         Load a SpriteAnimation from a spritesheet.
         """
@@ -97,7 +97,7 @@ class SpriteAnimation:
         flip_x: bool = False,
         flip_y: bool = False,
         colormap: dict = None,
-    ) -> "SpriteAnimation":
+    ) -> "FrameAnimation":
         """
         Load a SpriteAnimation from a sequence of images in a folder.
 
@@ -185,7 +185,7 @@ class SpriteAnimation:
         self.images = scale_images(self.images, scale)
 
     ############## edit and copy ###############
-    def flipped_copy(self, flip_x=False, flip_y=False) -> "SpriteAnimation":
+    def flipped_copy(self, flip_x=False, flip_y=False) -> "FrameAnimation":
         """
         Like `flip()` but returns a new instance.
 
@@ -194,7 +194,7 @@ class SpriteAnimation:
         """
         return self.__class__(images=flip_images(self.images, flip_x, flip_y))
 
-    def recolored_copy(self, colormap: dict) -> "SpriteAnimation":
+    def recolored_copy(self, colormap: dict) -> "FrameAnimation":
         """
         Like `recolor()` but returns a new instance.
 
@@ -203,7 +203,7 @@ class SpriteAnimation:
         """
         return self.__class__(images=recolor_images(self.images, colormap))
 
-    def scaled_copy(self, scale: float) -> "SpriteAnimation":
+    def scaled_copy(self, scale: float) -> "FrameAnimation":
         """
         Like `scale()` but returns a new instance.
 

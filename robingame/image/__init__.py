@@ -1,2 +1,2 @@
-from .sprite_animation import SpriteAnimation
+from .frame_animation import FrameAnimation
 from .utils import *

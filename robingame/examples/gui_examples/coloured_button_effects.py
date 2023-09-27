@@ -5,7 +5,7 @@ from robingame.animation import damping_response
 from robingame.examples.gui_examples.assets import button_flash
 from robingame.gui import Menu
 from robingame.gui.button import Button
-from robingame.image import scale_image, brighten, SpriteAnimation
+from robingame.image import scale_image, brighten, FrameAnimation
 from robingame.objects import Game, Group, Particle
 from robingame.utils import mouse_hovering_over, random_int
 
@@ -56,7 +56,7 @@ class ButtonWithImages(MyButton):
 
     def on_release(self):
         super().on_release()
-        self.animation = SpriteAnimation(images=[self.image_idle])
+        self.animation = FrameAnimation(images=[self.image_idle])
 
 
 class BouncyButton(MyButton):
