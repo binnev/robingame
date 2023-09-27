@@ -34,7 +34,7 @@ class ButtonWithImages(MyButton):
 
     def __init__(self, x: int, y: int, width: int, height: int, **kwargs):
         super().__init__(x, y, width, height, **kwargs)
-        self.image_idle = button_flash.images[-1]
+        self.image_idle = button_flash[-1]
         self.image_pressed = brighten_image(scale_image(self.image_idle.copy(), 0.9), amount=-50)
         self.image = self.image_idle
 
@@ -43,7 +43,7 @@ class ButtonWithImages(MyButton):
         super().state_idle()
 
     def state_focus(self):
-        self.image = self.animation.play_once(self.animation_frame, repeat_frame=0)
+        self.image = self.animation.play(self.animation_frame, repeat_frame=0)
         super().state_focus()
 
     def state_press(self):
@@ -87,7 +87,7 @@ class BouncyButton(MyButton):
 
     def update(self):
         super().update()
-        self.image = self.animation.play_once(self.animation_timer // self.frame_duration)
+        self.image = self.animation.play(self.animation_timer // self.frame_duration)
         scale_factor = damping_response(
             self.physics_timer, amp=self.amplitude, damping=self.damping, freq=0.2
         )
