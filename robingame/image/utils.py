@@ -74,11 +74,7 @@ def empty_image(*args, **kwargs) -> Surface:
     return img
 
 
-def relative_folder(current_file: str, folder: str) -> Path:
-    return Path(current_file).parent.absolute() / folder
-
-
-def pad_alpha(colour_tuple: Color | tuple) -> Color:
+def pad_alpha(colour_tuple: Color | tuple) -> Color | tuple:
     """
     Add the 4th (alpha) channel to a length 3 color tuple.
     By default it sets the new alpha channel to full opacity (255).
@@ -117,13 +113,16 @@ def brighten_color(color: Color | tuple, amount: int) -> Color:
     return Color(r, g, b, color.a)
 
 
-def brighten(image: Surface, amount: int):
+def brighten_image(image: Surface, amount: int) -> Surface:
     """
-    Use `brighten_color` to brighten all pixels in an image by `amount`. \
+    Use `brighten_color` to brighten all pixels in an image by `amount`.
 
     Args:
         image: the input image
         amount: how much to increase brightness
+
+    Returns:
+        a new image
     """
     width, height = image.get_size()
     # surface.copy() inherits surface's colorkey; preserving transparency
@@ -136,11 +135,7 @@ def brighten(image: Surface, amount: int):
         for y in range(height):
             color = image.get_at((x, y))[:]
             new_color = brighten_color(color, amount)
-            if new_color:
-                new_image.set_at((x, y), pygame.Color(*new_color))
-            else:
-                new_image.set_at((x, y), pygame.Color(*color))
-
+            new_image.set_at((x, y), pygame.Color(*new_color))
     return new_image
 
 
@@ -160,13 +155,6 @@ def scale_image(image: Surface, scale: float) -> Surface:
     return image
 
 
-def scale_images(images: [Surface], scale: float) -> [Surface]:
-    """
-    Apply `scale_image` to a list of images.
-    """
-    return [scale_image(image, scale) for image in images]
-
-
 def flip_image(image: Surface, flip_x: bool = False, flip_y: bool = False) -> Surface:
     """
     Return a flipped copy of an image.
@@ -180,13 +168,6 @@ def flip_image(image: Surface, flip_x: bool = False, flip_y: bool = False) -> Su
         output image
     """
     return pygame.transform.flip(image, bool(flip_x), bool(flip_y))
-
-
-def flip_images(images: [Surface], flip_x: bool = False, flip_y: bool = False):
-    """
-    Apply `flip_image` to a list of images.
-    """
-    return [flip_image(image, flip_x, flip_y) for image in images]
 
 
 def recolor_image(surface: Surface, color_mapping: dict) -> Surface:
@@ -221,13 +202,6 @@ def recolor_image(surface: Surface, color_mapping: dict) -> Surface:
                 new_surface.set_at((x, y), pygame.Color(*color))
 
     return new_surface
-
-
-def recolor_images(images: [Surface], colormap: dict) -> [Surface]:
-    """
-    Apply `recolor_image` to a list of images.
-    """
-    return [recolor_image(image, colormap) for image in images]
 
 
 def load_spritesheet(

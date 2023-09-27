@@ -1,18 +1,13 @@
+import pygame
+from pathlib import Path
+from unittest.mock import patch
+
 import pytest
 from pygame import Surface, Color
 
-from robingame.image import (
-    FrameAnimation,
-    load_spritesheet,
-    load_image_sequence,
-    load_image,
-    relative_folder,
-    brighten_color,
-    flip_image,
-    utils,
-)
+from robingame.image import utils
 
-mocks = relative_folder(__file__, "mocks")
+mocks_folder = Path(__file__).parent.parent.absolute() / "mocks"
 
 
 @pytest.mark.parametrize(
@@ -23,21 +18,28 @@ mocks = relative_folder(__file__, "mocks")
     ],
 )
 def test_load_spritesheet(num_images, expected_len):
-    filename = mocks / "123_spritesheet.png"
-    images = load_spritesheet(filename=filename, image_size=(64, 64), num_images=num_images)
+    filename = mocks_folder / "123_spritesheet.png"
+    images = utils.load_spritesheet(filename=filename, image_size=(64, 64), num_images=num_images)
     assert len(images) == expected_len
+    assert isinstance(images[0], Surface)
+
+
+def test_load_spritesheet_no_image_size_should_load_whole_sheet_as_one_image():
+    filename = mocks_folder / "123_spritesheet.png"
+    images = utils.load_spritesheet(filename=filename)
+    assert len(images) == 1
     assert isinstance(images[0], Surface)
 
 
 def test_load_spritesheet_not_found():
     with pytest.raises(FileNotFoundError) as e:
-        load_spritesheet(filename="foo/bar.png", image_size=(1, 1))
+        utils.load_spritesheet(filename="foo/bar.png", image_size=(1, 1))
     assert str(e.value) == "Couldn't find foo/bar.png"
 
 
 def test_load_image_sequence_not_found():
     with pytest.raises(FileNotFoundError) as e:
-        load_image_sequence(pattern="foo/bar*.png")
+        utils.load_image_sequence(pattern="foo/bar*.png")
     assert str(e.value) == "Couldn't find any images matching pattern 'foo/bar*.png'"
 
 
@@ -49,87 +51,26 @@ def test_load_image_sequence_not_found():
     ],
 )
 def test_load_image_sequence(num_images, expected_len):
-    filename = mocks / "123_series.png"
-    images = load_image_sequence(pattern=mocks / "123_series*.png", num_images=num_images)
+    images = utils.load_image_sequence(
+        pattern=mocks_folder / "123_series*.png", num_images=num_images
+    )
     assert len(images) == expected_len
     assert isinstance(images[0], Surface)
 
 
-def test_can_instantiate_empty_spriteanimation():
-    """images=None by default and it shouldn't try to flip/recolor/scale"""
-    FrameAnimation()
+@patch("pygame.image.load")
+def test_load_image_error(mock):
+    mock.side_effect = pygame.error("Argh!")
+    filename = mocks_folder / "123_spritesheet.png"
+    with pytest.raises(pygame.error) as e:
+        utils.load_image(filename.as_posix())
 
-
-def test_spriteanimation_from_spritesheet():
-    filename = mocks / "123_spritesheet.png"
-    anim = FrameAnimation.from_spritesheet(filename=filename, image_size=(64, 64))
-    assert isinstance(anim, FrameAnimation)
-    assert len(anim.images) == 3
-    assert isinstance(anim.images[0], Surface)
-
-
-def test_spriteanimation_from_image_sequence():
-    pattern = mocks / "123_series*.png"
-    anim = FrameAnimation.from_image_sequence(pattern=pattern)
-    assert isinstance(anim, FrameAnimation)
-    assert len(anim.images) == 3
-    assert isinstance(anim.images[0], Surface)
-
-
-def test_spriteanimation_from_image():
-    filename = mocks / "123_spritesheet.png"
-    anim = FrameAnimation.from_image(filename=filename)
-    assert isinstance(anim, FrameAnimation)
-    assert len(anim.images) == 1
-    assert isinstance(anim.images[0], Surface)
-
-
-def test_spriteanimation_copy_methods():
-    pxl = Surface((2, 2))
-    pxl.fill(Color("red"))
-    pxl.set_at((0, 0), Color("black"))
-
-    anim = FrameAnimation(images=[pxl])
-    assert anim.images[0].get_at((0, 0)) == Color("black")
-    assert anim.images[0].get_at((0, 1)) == Color("red")
-    assert anim.images[0].get_at((1, 0)) == Color("red")
-    assert anim.images[0].get_at((1, 1)) == Color("red")
-
-    hor_flip = anim.flipped_copy(flip_x=True)
-    assert hor_flip.images[0].get_at((0, 0)) == Color("red")
-    assert hor_flip.images[0].get_at((0, 1)) == Color("red")
-    assert hor_flip.images[0].get_at((1, 0)) == Color("black")
-    assert hor_flip.images[0].get_at((1, 1)) == Color("red")
-
-    ver_flip = anim.flipped_copy(flip_y=True)
-    assert ver_flip.images[0].get_at((0, 0)) == Color("red")
-    assert ver_flip.images[0].get_at((0, 1)) == Color("black")
-    assert ver_flip.images[0].get_at((1, 0)) == Color("red")
-    assert ver_flip.images[0].get_at((1, 1)) == Color("red")
-
-    recolored = anim.recolored_copy({(0, 0, 0): Color("blue")})
-    assert recolored.images[0].get_at((0, 0)) == Color("blue")
-    assert recolored.images[0].get_at((0, 1)) == Color("red")
-    assert recolored.images[0].get_at((1, 0)) == Color("red")
-    assert recolored.images[0].get_at((1, 1)) == Color("red")
-
-    scaled = anim.scaled_copy(scale=3)
-    assert anim.images[0].get_rect().width == 2
-    assert anim.images[0].get_rect().height == 2
-    assert scaled.images[0].get_rect().width == 6
-    assert scaled.images[0].get_rect().height == 6
-
-    # original should be unchanged
-    anim = FrameAnimation(images=[pxl])
-    assert anim.images[0].get_at((0, 0)) == Color("black")
-    assert anim.images[0].get_at((0, 1)) == Color("red")
-    assert anim.images[0].get_at((1, 0)) == Color("red")
-    assert anim.images[0].get_at((1, 1)) == Color("red")
+    assert str(e.value) == "Argh!"
 
 
 def test_load_image_with_per_pixel_transparency():
-    filename = mocks / "per_pixel_alpha.png"
-    image = load_image(filename.as_posix())
+    filename = mocks_folder / "per_pixel_alpha.png"
+    image = utils.load_image(filename.as_posix())
 
     # white and red pixels should have full alpha
     for red_pixel in [(0, 0), (0, 1), (1, 0), (1, 1)]:
@@ -147,8 +88,8 @@ def test_load_image_with_per_pixel_transparency():
 
 
 def test_load_image_with_global_transparency():
-    filename = mocks / "global_alpha.png"
-    image = load_image(filename.as_posix())
+    filename = mocks_folder / "global_alpha.png"
+    image = utils.load_image(filename.as_posix())
 
     # white and red and green pixels should have full alpha
     for red_pixel in [(0, 0), (0, 1), (1, 0), (1, 1)]:
@@ -214,12 +155,21 @@ def test_load_image_with_global_transparency():
     ],
 )
 def test_brighten_color(amount, old_color, new_color):
-    assert brighten_color(old_color, amount=amount) == new_color
+    assert utils.brighten_color(old_color, amount=amount) == new_color
+
+
+def test_brighten_image():
+    filename = mocks_folder / "global_alpha.png"
+    image = utils.load_image(filename.as_posix())
+    new_image = utils.brighten_image(image, 300)
+    for x in range(new_image.get_width() - 1):
+        for y in range(new_image.get_height() - 1):
+            assert new_image.get_at((x, y)) == (255, 255, 255, 255)
 
 
 def test_subsurface():
-    filename = mocks / "padded.png"
-    image = load_image(filename.as_posix())
+    filename = mocks_folder / "padded.png"
+    image = utils.load_image(filename.as_posix())
     assert image.get_width() == 16
     assert image.get_height() == 6
 
@@ -258,3 +208,20 @@ def test_recolor_image():
     new_image = utils.recolor_image(image, color_mapping={(255, 0, 0): (0, 255, 0)})
     assert new_image.get_at((0, 0)) == Color("green")
     assert new_image is not image  # should be a copy
+
+
+@pytest.mark.parametrize(
+    "input, expected_output",
+    [
+        (Color("red"), (255, 0, 0, 255)),
+        ((255, 0, 0), (255, 0, 0, 255)),
+    ],
+)
+def test_pad_alpha(input, expected_output):
+    assert utils.pad_alpha(input) == expected_output
+
+
+def test_pad_alpha_error():
+    with pytest.raises(Exception) as e:
+        utils.pad_alpha((0,))
+    assert str(e.value) == "bogus colour, man"

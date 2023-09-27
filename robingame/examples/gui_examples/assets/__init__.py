@@ -1,6 +1,8 @@
-from robingame.image import FrameAnimation, relative_folder
+from pathlib import Path
 
-folder = relative_folder(__file__, "")
+from robingame.image import FrameAnimation
+
+folder = Path(__file__).parent
 
 
 button_flash = FrameAnimation.from_spritesheet(

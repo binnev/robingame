@@ -5,7 +5,7 @@ from robingame.animation import damping_response
 from robingame.examples.gui_examples.assets import button_flash
 from robingame.gui import Menu
 from robingame.gui.button import Button
-from robingame.image import scale_image, brighten, FrameAnimation
+from robingame.image import scale_image, brighten_image, FrameAnimation
 from robingame.objects import Game, Group, Particle
 from robingame.utils import mouse_hovering_over, random_int
 
@@ -35,7 +35,7 @@ class ButtonWithImages(MyButton):
     def __init__(self, x: int, y: int, width: int, height: int, **kwargs):
         super().__init__(x, y, width, height, **kwargs)
         self.image_idle = button_flash.images[-1]
-        self.image_pressed = brighten(scale_image(self.image_idle.copy(), 0.9), amount=-50)
+        self.image_pressed = brighten_image(scale_image(self.image_idle.copy(), 0.9), amount=-50)
         self.image = self.image_idle
 
     def state_idle(self):
